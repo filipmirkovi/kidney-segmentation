@@ -8,22 +8,31 @@ from tqdm import tqdm
 
 
 class Trainer:
-    def __init__(self, num_epochs: int, loss_fn: nn.Module, validate_every: int = 1):
+    def __init__(
+        self,
+        num_epochs: int,
+        loss_fn: nn.Module,
+        validate_every: int = 1,
+        log_every_n_steps: int = 100,
+    ):
         self.num_epochs = num_epochs
         self.validate_every = validate_every
+        self.log_every_n_steps: int = log_every_n_steps
         self.loss_fn: nn.Module = loss_fn
 
     def _train_epoch(
         self, model: nn.Module, dataloader: DataLoader, optimizer: Optimizer
     ):
         model.train()
-        for batch in tqdm(dataloader):
+        for i, batch in tqdm(enumerate(dataloader)):
             optimizer.zero_grad()
             x, y = batch
             ypred: torch.Tensor = model(x)
             loss: torch.Tensor = self.loss_fn(y, ypred)
-            loss.backward()
+            loss.mean().backward()
             optimizer.step()
+            if self.log_every_n_steps % i == 0:
+                pass
 
     def _validation_epoch(
         self, model: nn.Module, dataloader: DataLoader, optimizer: Optimizer

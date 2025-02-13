@@ -11,11 +11,11 @@ class UpLayer(nn.Module):
             nn.ReLU(),
             nn.Conv2d(
                 kernel_size=kernel_size,
-                in_channels=in_channels,
+                in_channels=2 * in_channels,
                 out_channels=in_channels,
                 padding="same",
             ),
-            nn.BatchNorm2d(out_channels),
+            nn.BatchNorm2d(in_channels),
             nn.ReLU(),
             nn.Conv2d(
                 kernel_size=kernel_size,
@@ -105,7 +105,8 @@ class UNet(nn.Module):
                 for i in range(len(channels) - 1)
             ]
         )
-        channles = channels[1:].reverse() + [num_classes]
+        channels.reverse()
+        channels = channels[:-1] + [num_classes]
         self.uplayers = nn.ModuleList(
             [
                 UpLayer(
@@ -119,4 +120,14 @@ class UNet(nn.Module):
         )
 
     def forward(self, image: torch.Tensor) -> torch.Tensor:
-        pass
+        intermediate: list[torch.Tensor] = []
+        for down_layer in self.downlayers:
+            image, downsampled = down_layer(image)
+            intermediate.append(downsampled)
+
+        for up_layer in self.uplayers:
+            skip = intermediate.pop()
+            # image = torch.cat([image, skip], dim=-3)
+            image = up_layer(image, skip)
+
+        return image  # torch.nn.functional.sigmoid(image)
