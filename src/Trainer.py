@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 import mlflow
 from tqdm import tqdm
 
-from src.utils.metrics import MetricCalc
+from src.utils.metrics import iou_score
 
 
 class Trainer:
@@ -16,13 +16,16 @@ class Trainer:
         loss_fn: nn.Module,
         validate_every: int = 1,
         log_every_n_steps: int = 100,
-        metric_calc: MetricCalc = None,
     ):
         self.num_epochs = num_epochs
         self.validate_every = validate_every
         self.log_every_n_steps: int = log_every_n_steps
         self.loss_fn: nn.Module = loss_fn
-        self.metric_calc = metric_calc
+        self.label_to_id = {"blood_vessel": 0, "glomerulus": 1, "unsure": 2}
+        self.id_to_label = {v: k for k, v in self.label_to_id.items()}
+
+    def class_iou_score(self, y_pred, y_true):
+        iou = iou_score(y_pred, y_true)
 
     def _train_epoch(
         self, model: nn.Module, dataloader: DataLoader, optimizer: Optimizer
