@@ -6,6 +6,7 @@ from torch.utils.data import DataLoader, random_split
 from src.dataset.SegmentationDataset import SegemetationDataset
 from src.Trainer import Trainer
 from src.model.UNet import UNet
+from src.utils.metrics import MetricCalc, iou_score
 
 data_path = "./data/"
 
@@ -15,7 +16,7 @@ random_seed = 100
 experiment = "Example-Run"
 
 
-mlflow.set_tracking_uri(uri="http://127.0.0.1:44000")
+mlflow.set_tracking_uri(uri="http://127.0.0.1:44555")
 
 
 def main():
@@ -35,7 +36,8 @@ def main():
     model: torch.nn.Module = UNet(hidden_channels=[32, 64, 128, 256])
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
     loss = torch.nn.BCEWithLogitsLoss(reduction="none")
-    trainer = Trainer(loss_fn=loss)
+    metric_calc = MetricCalc({"iou_score": iou_score})
+    trainer = Trainer(loss_fn=loss, metric_calc=metric_calc)
 
     with mlflow.start_run() as run:
 
