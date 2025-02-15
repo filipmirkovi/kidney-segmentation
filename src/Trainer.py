@@ -6,7 +6,8 @@ from torch.utils.data import DataLoader
 import mlflow
 from tqdm import tqdm
 
-from src.utils.metrics import iou_score
+
+from src.utils.metrics import IOUScore
 
 
 class Trainer:
@@ -23,9 +24,8 @@ class Trainer:
         self.loss_fn: nn.Module = loss_fn
         self.label_to_id = {"blood_vessel": 0, "glomerulus": 1, "unsure": 2}
         self.id_to_label = {v: k for k, v in self.label_to_id.items()}
-
-    def class_iou_score(self, y_pred, y_true):
-        iou = iou_score(y_pred, y_true)
+        self.iou_score = IOUScore(num_classes=3)
+        self.best_iou = torch.tensor(0.0)
 
     def _train_epoch(
         self, model: nn.Module, dataloader: DataLoader, optimizer: Optimizer
@@ -42,13 +42,23 @@ class Trainer:
             num_examples += y.shape[0]
             loss.mean().backward()
             optimizer.step()
-            if self.metric_calc:
-                self.metric_calc.calc_metrics(y, y_pred)
+            self.iou_score.update(y_pred, y)
 
             if self.log_every_n_steps % i == 0:
                 mlflow.log_metric("train_loss", running_loss / num_examples)
                 num_examples = 0
                 running_loss = torch.tensor(0.0)
+                class_iou = self.iou_score.compute()
+                if class_iou.mean() > self.best_iou:
+                    # TODO: log model
+                    self.log_model
+                    self.best_iou = class_iou.mean()
+                mlflow.log_metrics(
+                    {
+                        label + "_iou_score": class_iou[label_id]
+                        for label, label_id in self.label_to_id.items()
+                    }
+                )
 
     def _validation_epoch(
         self, model: nn.Module, dataloader: DataLoader, optimizer: Optimizer
@@ -73,6 +83,3 @@ class Trainer:
             self._train_epoch(model, train_loader, optimizer=optimizer)
             if epoch_idx % self.validate_every == 0:
                 self._validation_epoch(model, val_loader)
-
-    def log_metrics(self):
-        pass
