@@ -112,7 +112,7 @@ class Trainer:
                 if example_data is not None
                 else None
             )
-            model_info = mlflow.pytorch.log_model(model, "model", signature=signature)
+            model_info = mlflow.pytorch.save_model(model, "model", signature=signature)
             self.best_iou = new_score
 
     def train(
