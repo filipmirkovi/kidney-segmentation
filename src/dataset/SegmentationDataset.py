@@ -85,8 +85,9 @@ class SegemetationDataset(Dataset):
         data_item: SegDataItem = self.data[index]
         input_image = Image.open(data_item.image_path)
         label_masks = self.get_target_mask(input_image.size, data_item.annotations)
-
-        return pil_to_tensor(input_image), label_masks
+        if label_masks:
+            label_masks = label_masks.float()
+        return pil_to_tensor(input_image).float(), label_masks
 
     def __len__(self):
         return len(self.data)

@@ -1,0 +1,8 @@
+experiment: "Example-Run"
+
+batch_size: 2
+lr: 1e-4
+num_epochs: 2
+device: "cuda:0"
+data_path: "./data/"
+model_save_path: "./app_data/model/"

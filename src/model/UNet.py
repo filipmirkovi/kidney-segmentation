@@ -129,5 +129,6 @@ class UNet(nn.Module):
             skip = intermediate.pop()
             # image = torch.cat([image, skip], dim=-3)
             image = up_layer(image, skip)
-
+        # NOTE: We use BCEWithLogitsLoss which means
+        # the loss itself implements the sigmoid.
         return image  # torch.nn.functional.sigmoid(image)

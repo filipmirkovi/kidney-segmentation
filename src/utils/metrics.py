@@ -2,6 +2,32 @@ from torchmetrics import Metric
 import torch
 
 
+class NumSteps(Metric):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.add_state("steps", default=torch.tensor(0.0))
+
+    def update(self):
+        self.steps.add_(1.0)
+
+    def compute(self):
+        return self.steps
+
+
+class LossMonitor(Metric):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.add_state("loss", default=torch.tensor(0.0))
+        self.add_state("num_elements", default=torch.tensor(0.0))
+
+    def update(self, loss: torch.Tensor) -> None:
+        self.num_elements += loss.shape[0]
+        self.loss += loss.sum(dim=0)
+
+    def compute(self) -> torch.Tensor:
+        return self.loss / self.num_elements
+
+
 class IOUScore(Metric):
     def __init__(
         self,
@@ -33,5 +59,10 @@ if __name__ == "__main__":
     y = torch.ones(4, 3, 100, 100)
     for i in range(10):
         iou.update(x, y)
+        print(iou.iou_score.shape)
+    print(iou.compute())
+    iou.reset()
+    for i in range(10):
+        iou.update(x, 0 * y)
         print(iou.iou_score.shape)
     print(iou.compute())

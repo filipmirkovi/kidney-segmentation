@@ -7,3 +7,6 @@ hydra-core
 opencv-python>=4.11.0
 tqdm
 loguru
+streamlit
+uvicorn
+pyyaml
