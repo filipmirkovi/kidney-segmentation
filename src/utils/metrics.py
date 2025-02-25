@@ -32,9 +32,12 @@ class IOUScore(Metric):
     def __init__(
         self,
         num_classes: int,
+        include_background_as_class: bool = False,
         **kwargs,
     ):
         super().__init__(**kwargs)
+        if include_background_as_class:
+            num_classes += 1
         self.add_state(
             "iou_score", default=torch.zeros(num_classes), dist_reduce_fx="sum"
         )

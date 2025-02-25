@@ -7,6 +7,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 import torch
+import yaml
 from cv2 import fillPoly
 from torch.utils.data import Dataset
 from torchvision.transforms.functional import pil_to_tensor
@@ -25,7 +26,10 @@ class SegDataItem:
 
 class SegemetationDataset(Dataset):
     def __init__(
-        self, images_path: str | Path, labels_path: Optional[str | Path] = None
+        self,
+        images_path: str | Path,
+        labels_path: Optional[str | Path] = None,
+        labels_yaml: str | Path = "../../configs/label_ids.yaml",
     ):
         """
         images_path: path to where the images are contained.
@@ -33,8 +37,11 @@ class SegemetationDataset(Dataset):
         """
         self.images_path = Path(images_path)
         self.labels_path = labels_path
-        self.label_to_id = {"blood_vessel": 0, "glomerulus": 1, "unsure": 2}
-        self.id_to_label = {0: "blood_vessel", 1: "glomerulus", 2: "unsure"}
+
+        with open(labels_yaml, "r") as label_file:
+            self.label_to_id = yaml.safe_load(label_file)
+
+        self.id_to_label = {v: k for k, v in self.label_to_id.items()}
         self.set_up()
 
     def set_up(self) -> None:
@@ -85,7 +92,7 @@ class SegemetationDataset(Dataset):
         data_item: SegDataItem = self.data[index]
         input_image = Image.open(data_item.image_path)
         label_masks = self.get_target_mask(input_image.size, data_item.annotations)
-        if label_masks:
+        if label_masks is not None:
             label_masks = label_masks.float()
         return pil_to_tensor(input_image).float(), label_masks
 

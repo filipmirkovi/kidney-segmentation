@@ -118,6 +118,7 @@ class UNet(nn.Module):
                 for i in range(len(channels) - 1)
             ]
         )
+        self.softmax = nn.Softmax(dim=-3)
 
     def forward(self, image: torch.Tensor) -> torch.Tensor:
         intermediate: list[torch.Tensor] = []
@@ -131,4 +132,5 @@ class UNet(nn.Module):
             image = up_layer(image, skip)
         # NOTE: We use BCEWithLogitsLoss which means
         # the loss itself implements the sigmoid.
-        return image  # torch.nn.functional.sigmoid(image)
+        image = image - torch.max(image, keepdim=True, dim=-3).values
+        return self.softmax(image)

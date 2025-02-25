@@ -1,4 +1,4 @@
-from typing import Callable
+from pathlib import Path
 import torch
 import torch.nn as nn
 from torch.optim import Optimizer
@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 import mlflow
 from mlflow.models import infer_signature
 from tqdm import tqdm
-
+import yaml
 
 from src.utils.metrics import LossMonitor, IOUScore, NumSteps
 
@@ -19,6 +19,7 @@ class Trainer:
         validate_every: int = 1,
         log_every_n_steps: int = 100,
         device: str = "cpu",
+        labels_path: str | Path = "../configs/label_ids.yaml",
     ):
         self.num_epochs = num_epochs
         self.device = device
@@ -27,12 +28,16 @@ class Trainer:
         self.loss_fn: nn.Module = loss_fn
         self.loss_monitor = LossMonitor().to(self.device)
 
-        self.iou_score = IOUScore(num_classes=3).to(self.device)
+        self.iou_score = IOUScore(num_classes=3, include_background_as_class=True).to(
+            self.device
+        )
         self.best_iou = torch.tensor(0.0, device=self.device)
         self.train_step_counter = NumSteps()
         self.eval_step_counter = NumSteps()
 
-        self.label_to_id = {"blood_vessel": 0, "glomerulus": 1, "unsure": 2}
+        with open(labels_path, "r") as label_file:
+            self.label_to_id = yaml.safe_load(label_file)
+
         self.id_to_label = {v: k for k, v in self.label_to_id.items()}
 
     def _train_epoch(
@@ -50,10 +55,10 @@ class Trainer:
             x, y = x.to(self.device), y.to(self.device)
             y_pred: torch.Tensor = model(x)
             loss: torch.Tensor = self.loss_fn(y, y_pred)
-            loss = loss.mean(dim=(-1, -2, -3))
+            loss = loss.mean(dim=(-1, -2))
+
             loss.mean().backward()
             optimizer.step()
-
             self.loss_monitor.update(loss.to(self.device))
             self.iou_score.update(y_pred, y)
 
@@ -80,7 +85,7 @@ class Trainer:
                 x, y = x.to(self.device), y.to(self.device)
                 y_pred: torch.Tensor = model(x)
                 loss: torch.Tensor = self.loss_fn(y, y_pred)
-                loss = loss.mean(dim=(-1, -2, -3))
+                loss = loss.mean(dim=(-1, -2))
                 self.iou_score.update(y_pred, y)
                 self.loss_monitor.update(loss)
 
@@ -112,7 +117,7 @@ class Trainer:
                 if example_data is not None
                 else None
             )
-            model_info = mlflow.pytorch.save_model(model, "model", signature=signature)
+            model_info = mlflow.pytorch.log_model(model, "model", signature=signature)
             self.best_iou = new_score
 
     def train(
