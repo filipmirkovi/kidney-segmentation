@@ -1,23 +1,22 @@
 from pathlib import Path
 import torch
 import mlflow
+from argparse import ArgumentParser
 from loguru import logger
-
+import yaml
 from torch.utils.data import DataLoader, random_split
 
 from src.dataset.SegmentationDataset import SegemetationDataset
 from src.Trainer import Trainer
 from src.model.UNet import UNet
 
-
+experiment = "Example-Run"
 data_path = "./data/"
-
 batch_size = 32
-lr = 5e-4
+lr = 3e-3
 num_epochs = 1000
 random_seed = 100
 num_segmentation_regions = 3
-experiment = "Example-Run"
 device = "cuda:0"
 save_dir = "./app_data/model/"
 mlflow_tracking_uri = "http://10.100.111.210:44555"  # "http://127.0.0.1:44555"
@@ -39,7 +38,10 @@ logger.add(
 )
 
 
-def main():
+def main(config_path: str | Path):
+    logger.info("Loading configs...")
+    with open(config_path, "r") as config_file:
+        configs = yaml.safe_load(config_file)
     mlflow.set_experiment(experiment)
     # torch.random.seed(random_seed)
     logger.info("Setting up datasets...")
@@ -86,5 +88,9 @@ def main():
     logger.info("Training done!")
 
 
+parser = ArgumentParser()
+parser.add_argument("--config_path", type=str, default="configs/train_configs.yaml")
+
 if __name__ == "__main__":
-    main()
+    args = parser.parse_args()
+    main(config_path=args.config_path)

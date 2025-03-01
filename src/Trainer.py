@@ -17,7 +17,7 @@ class Trainer:
         num_epochs: int,
         loss_fn: nn.Module,
         validate_every: int = 1,
-        log_every_n_steps: int = 100,
+        log_every_n_steps: int = 450,
         device: str = "cpu",
         labels_path: str | Path = "../configs/label_ids.yaml",
     ):
@@ -41,7 +41,11 @@ class Trainer:
         self.id_to_label = {v: k for k, v in self.label_to_id.items()}
 
     def _train_epoch(
-        self, model: nn.Module, dataloader: DataLoader, optimizer: Optimizer
+        self,
+        model: nn.Module,
+        dataloader: DataLoader,
+        optimizer: Optimizer,
+        epoch: int,
     ):
         self.loss_monitor.reset()
         model.train()
@@ -63,6 +67,7 @@ class Trainer:
             self.iou_score.update(y_pred, y)
 
             if self.train_step_counter.compute() % self.log_every_n_steps == 0:
+                mlflow.log_metric("epoch", epoch)
                 mlflow.log_metric("train_loss", self.loss_monitor.compute())
                 self.loss_monitor.reset()
                 class_iou = self.iou_score.compute()
@@ -129,6 +134,6 @@ class Trainer:
     ):
 
         for epoch_idx in range(1, self.num_epochs + 1):
-            self._train_epoch(model, train_loader, optimizer=optimizer)
+            self._train_epoch(model, train_loader, optimizer=optimizer, epoch=epoch_idx)
             if epoch_idx % self.validate_every == 0:
                 self._validation_epoch(model, val_loader)

@@ -1,8 +1,15 @@
 experiment: "Example-Run"
 
-batch_size: 2
-lr: 1e-4
-num_epochs: 2
-device: "cuda:0"
 data_path: "./data/"
-model_save_path: "./app_data/model/"
+save_dir: "./app_data/model/"
+
+mlflow_tracking_uri: "http://10.100.111.210:44555"  # "http://127.0.0.1:44555"
+
+batch_size: 16
+lr: 3e-2
+num_epochs: 1000
+random_seed: 100
+device: "cuda:0"
+
+
+num_segmentation_regions: 3

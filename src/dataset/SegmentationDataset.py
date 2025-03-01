@@ -94,7 +94,7 @@ class SegemetationDataset(Dataset):
         label_masks = self.get_target_mask(input_image.size, data_item.annotations)
         if label_masks is not None:
             label_masks = label_masks.float()
-        return pil_to_tensor(input_image).float(), label_masks
+        return pil_to_tensor(input_image).float() / 255.0, label_masks
 
     def __len__(self):
         return len(self.data)
