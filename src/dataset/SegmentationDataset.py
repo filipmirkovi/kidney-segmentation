@@ -47,11 +47,17 @@ class SegemetationDataset(Dataset):
     def set_up(self) -> None:
         labels = self.load_labels(self.labels_path)
         if labels is None:
+            image_files = (
+                list(self.images_path.glob("*.tif"))
+                + list(self.images_path.glob("*.png"))
+                + list(self.images_path.glob("*.jpg"))
+                + list(self.images_path.glob("*.jpeg"))
+            )
             self.data = [
                 SegDataItem(
                     id=img_path.stem, image_path=Path(self.images_path, img_path)
                 )
-                for img_path in self.images_path.glob("*.tif")
+                for img_path in image_files
             ]
         else:
             self.data = []
