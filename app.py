@@ -13,14 +13,13 @@ from src.dataset.SegmentationDataset import SegemetationDataset
 from src.utils.visualization import make_images_with_masks
 
 
-data_dir = "app_data/data"
+data_dir = "app_data/data/"
 save_dir = "app_data/output/"
+model_dir = "app_data/model/"
+config_dir = "configs"
 
-st.markdown(
-    """
-    ## Kidney tissue segmentation!
-    """
-)
+
+st.image("app_data/resources/logo.png")
 
 
 if "welcome_streamed" not in st.session_state:
@@ -70,7 +69,7 @@ if uploaded_zip is not None:
     st.write(f"**to `{data_dir}`**")
 
     dataset = SegemetationDataset(
-        images_path="app_data/data/", labels_yaml="configs/label_ids.yaml"
+        images_path=data_dir, labels_yaml=Path(config_dir, "label_ids.yaml")
     )
     loader = DataLoader(dataset=dataset, batch_size=4, num_workers=4)
 
@@ -80,7 +79,7 @@ if uploaded_zip is not None:
         n_batches = len(loader)
 
         model: torch.nn.Module = mlflow.pytorch.load_model(
-            model_uri="app_data/model/final_model"
+            model_uri=Path(model_dir, "final_model")
         )
         model.eval()
         with torch.no_grad():
@@ -94,5 +93,5 @@ if uploaded_zip is not None:
                 )
         progress_bar.progress(i + 1, f"Processing batch: {i+1}/{n_batches}")
 
-        st.write_stream(streamify_string("Results saved to `{save_dir}`."))
+        st.write_stream(streamify_string(f"Results saved to `{save_dir}`."))
 # st.selectbox(label="Select the model output you want to show ",options=)
