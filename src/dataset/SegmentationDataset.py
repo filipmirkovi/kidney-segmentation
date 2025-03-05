@@ -24,6 +24,12 @@ class SegDataItem:
     annotations: Optional[dict[str, list[np.ndarray]]] = False
 
 
+def normalize_image(img: torch.Tensor) -> torch.Tensor:
+    img.div_(255.0)
+    img = (img - 0.5) / 0.5
+    return img
+
+
 class SegemetationDataset(Dataset):
     def __init__(
         self,
@@ -100,7 +106,9 @@ class SegemetationDataset(Dataset):
         label_masks = self.get_target_mask(input_image.size, data_item.annotations)
         if label_masks is not None:
             label_masks = label_masks.float()
-        return pil_to_tensor(input_image).float() / 255.0, label_masks
+        image = pil_to_tensor(input_image).float()
+        image = normalize_image(image)
+        return image, label_masks
 
     def __len__(self):
         return len(self.data)
