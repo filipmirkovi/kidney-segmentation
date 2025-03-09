@@ -55,13 +55,22 @@ def main(config_path: str | Path):
     logger.info("Datasets created!...")
 
     logger.info("Initializing model...")
-    model: torch.nn.Module = UNet(
+    model: torch.nn.Module = torch.hub.load(
+        "mateuszbuda/brain-segmentation-pytorch",
+        "unet",
         in_channels=3,
-        num_classes=int(configs["num_segmentation_regions"])
-        + 1,  # The last +1 indicates the model should handle background as well.
-        hidden_channels=[32, 64, 128, 256],
+        out_channels=int(configs["num_segmentation_regions"]) + 1,
+        init_features=32,
+        pretrained=False,
+    )  # UNet(
+    # in_channels=3,
+    # num_classes=int(configs["num_segmentation_regions"])
+    # + 1,  # The last +1 indicates the model should handle background as well.
+    # hidden_channels=[64, 128, 256, 512],
+    # )
+    logger.info(
+        "Model built {}!\nSending model to device {}".format(model, configs["device"])
     )
-    logger.info("Model built!\nSending model to device {}".format(configs["device"]))
     model = model.to(configs["device"])
     optimizer = torch.optim.AdamW(model.parameters(), lr=float(configs["lr"]))
     loss = torch.nn.CrossEntropyLoss(reduction="none")
