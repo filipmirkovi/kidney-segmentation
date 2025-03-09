@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 import torch
 import torch.nn as nn
@@ -7,6 +8,7 @@ import mlflow
 from mlflow.models import infer_signature
 from tqdm import tqdm
 import yaml
+from loguru import logger
 
 from src.utils.metrics import LossMonitor, IOUScore, NumSteps
 
@@ -21,6 +23,10 @@ class Trainer:
         device: str = "cpu",
         labels_path: str | Path = "../configs/label_ids.yaml",
     ):
+        with open(labels_path, "r") as label_file:
+            self.label_to_id = yaml.safe_load(label_file)
+        self.id_to_label = {v: k for k, v in self.label_to_id.items()}
+
         self.num_epochs = num_epochs
         self.device = device
         self.validate_every = validate_every
@@ -28,17 +34,15 @@ class Trainer:
         self.loss_fn: nn.Module = loss_fn
         self.loss_monitor = LossMonitor().to(self.device)
 
-        self.iou_score = IOUScore(num_classes=3, include_background_as_class=True).to(
-            self.device
-        )
+        self.iou_score = IOUScore(
+            num_classes=len(self.id_to_label.items()), include_background_as_class=False
+        ).to(self.device)
         self.best_iou = torch.tensor(0.0, device=self.device)
         self.train_step_counter = NumSteps()
         self.eval_step_counter = NumSteps()
-
-        with open(labels_path, "r") as label_file:
-            self.label_to_id = yaml.safe_load(label_file)
-
-        self.id_to_label = {v: k for k, v in self.label_to_id.items()}
+        self.logger = logger
+        logger.add(sys.stdout, format="{time} {level} {message}", level="INFO")
+        self.model_info = None
 
     def _train_epoch(
         self,
@@ -122,7 +126,10 @@ class Trainer:
                 if example_data is not None
                 else None
             )
-            model_info = mlflow.pytorch.log_model(model, "model", signature=signature)
+            self.model_info = mlflow.pytorch.log_model(
+                model, "model", signature=signature
+            )
+            self.logger.info(f"Logged Model Info: {self.model_info}")
             self.best_iou = new_score
 
     def train(

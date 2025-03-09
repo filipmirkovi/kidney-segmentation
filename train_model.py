@@ -8,7 +8,6 @@ from torch.utils.data import DataLoader, random_split
 
 from src.dataset.SegmentationDataset import SegemetationDataset
 from src.Trainer import Trainer
-from src.model.UNet import UNet
 
 
 # Configure loguru at the start of the script
