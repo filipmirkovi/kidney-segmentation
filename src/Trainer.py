@@ -63,7 +63,7 @@ class Trainer:
             x, y = x.to(self.device), y.to(self.device)
             y_pred: torch.Tensor = model(x)
             loss: torch.Tensor = self.loss_fn(y, y_pred)
-            loss = loss.mean(dim=(-1, -2))
+            loss = loss.mean(-1)
 
             loss.mean().backward()
             optimizer.step()
@@ -94,7 +94,7 @@ class Trainer:
                 x, y = x.to(self.device), y.to(self.device)
                 y_pred: torch.Tensor = model(x)
                 loss: torch.Tensor = self.loss_fn(y, y_pred)
-                loss = loss.mean(dim=(-1, -2))
+                loss = loss.mean(dim=-1)
                 self.iou_score.update(y_pred, y)
                 self.loss_monitor.update(loss)
 

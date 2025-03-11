@@ -7,16 +7,8 @@ class UpLayer(nn.Module):
         super().__init__()
 
         self.layers = nn.Sequential(
-            nn.BatchNorm2d(2 * in_channels),
-            nn.ReLU(),
-            nn.Conv2d(
-                kernel_size=kernel_size,
-                in_channels=2 * in_channels,
-                out_channels=in_channels,
-                padding="same",
-            ),
             nn.BatchNorm2d(in_channels),
-            nn.ReLU(),
+            nn.SELU(),
             nn.Conv2d(
                 kernel_size=kernel_size,
                 in_channels=in_channels,
@@ -24,7 +16,15 @@ class UpLayer(nn.Module):
                 padding="same",
             ),
             nn.BatchNorm2d(in_channels),
-            nn.ReLU(),
+            nn.SELU(),
+            nn.Conv2d(
+                kernel_size=kernel_size,
+                in_channels=in_channels,
+                out_channels=in_channels,
+                padding="same",
+            ),
+            nn.BatchNorm2d(in_channels),
+            nn.SELU(),
             nn.Conv2d(
                 kernel_size=kernel_size,
                 in_channels=in_channels,
@@ -33,14 +33,16 @@ class UpLayer(nn.Module):
             ),
         )
 
-        self.upsample = nn.Upsample(scale_factor=2) if pool else nn.Identity()
+        self.upsample = (
+            nn.Upsample(scale_factor=2, mode="bilinear") if pool else nn.Identity()
+        )
 
     def forward(self, x: torch.Tensor, skip_connection: torch.Tensor):
         # The x and skip_connection tensors are either
         # CxHxW or BxCxHxW shaped, which means that the dim=-3
         # corresponds to the channel dim regardless of a batched or
         # unbatched input.
-        x = torch.cat([x, skip_connection], dim=-3)
+        x = x + skip_connection
         x = self.layers(x)
         return self.upsample(x)
 
@@ -51,7 +53,7 @@ class DownLayer(nn.Module):
 
         self.layers = nn.Sequential(
             nn.BatchNorm2d(in_channels),
-            nn.ReLU(),
+            nn.SELU(),
             nn.Conv2d(
                 kernel_size=kernel_size,
                 in_channels=in_channels,
@@ -59,7 +61,7 @@ class DownLayer(nn.Module):
                 padding="same",
             ),
             nn.BatchNorm2d(out_channels),
-            nn.ReLU(),
+            nn.SELU(),
             nn.Conv2d(
                 kernel_size=kernel_size,
                 in_channels=out_channels,
@@ -67,7 +69,7 @@ class DownLayer(nn.Module):
                 padding="same",
             ),
             nn.BatchNorm2d(out_channels),
-            nn.ReLU(),
+            nn.SELU(),
             nn.Conv2d(
                 kernel_size=kernel_size,
                 in_channels=out_channels,

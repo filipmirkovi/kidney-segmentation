@@ -98,6 +98,8 @@ class SegemetationDataset(Dataset):
             for polygon in polygons:
                 fillPoly(label_masks[self.label_to_id[annot]], pts=[polygon], color=1)
 
+        background = torch.ones(image_size) - sum(label_masks)
+        label_masks[self.label_to_id["background"]] = background
         return torch.tensor(label_masks)
 
     def __getitem__(self, index) -> tuple[torch.Tensor | None]:
