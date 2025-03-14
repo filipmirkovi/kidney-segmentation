@@ -93,6 +93,7 @@ class UNet(nn.Module):
         num_classes: int,
         hidden_channels: list[int] = [32, 64, 128],
         kernel_size=3,
+        apply_softmax: bool = True,
     ):
         super().__init__()
         channels = [in_channels] + hidden_channels
@@ -120,7 +121,7 @@ class UNet(nn.Module):
                 for i in range(len(channels) - 1)
             ]
         )
-        self.softmax = nn.Softmax(dim=-3)
+        self.softmax = nn.Softmax(dim=-3) if apply_softmax else nn.Identity()
 
     def forward(self, image: torch.Tensor) -> torch.Tensor:
         intermediate: list[torch.Tensor] = []

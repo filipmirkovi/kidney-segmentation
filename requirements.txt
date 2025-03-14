@@ -10,3 +10,5 @@ loguru
 streamlit
 uvicorn
 pyyaml
+einops
+segmentation-models-pytorch

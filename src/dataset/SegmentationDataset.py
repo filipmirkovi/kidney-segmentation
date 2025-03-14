@@ -11,6 +11,7 @@ import yaml
 from cv2 import fillPoly
 from torch.utils.data import Dataset
 from torchvision.transforms.functional import pil_to_tensor
+from tqdm import tqdm
 
 
 @dataclass
@@ -114,3 +115,27 @@ class SegemetationDataset(Dataset):
 
     def __len__(self):
         return len(self.data)
+
+    def get_class_weights(self, tol=1e-5) -> np.ndarray:
+        """
+        A class weight of class is calculated as the mean
+        inverse area of the class (segmentation region), normalized
+        by the image size.
+        """
+        assert (
+            self.labels_path is not None
+        ), "This instance of SegmentationDataset does not contain information about class masks!"
+        class_weights = np.zeros(len(self.label_to_id))
+
+        for i in tqdm(range(len(self)), desc="Calculating class_weights"):
+            img, mask = self[i]
+            _, H, W = mask.shape
+
+            class_area = mask.sum(dim=(-1, -2))
+            class_weights += np.where(
+                class_area.numpy() > 0, H * W / (class_area.numpy()), 0
+            )
+
+        class_weights /= len(self)
+
+        return class_weights

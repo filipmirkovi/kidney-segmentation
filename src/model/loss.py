@@ -20,17 +20,17 @@ class SoftDiceLoss(nn.Module):
 
     def __init__(
         self,
-        n_classes,
-        background=True,
-        smooth=1e-5,
-        apply_softmax=True,
-        reduction="mean",
-        class_weights=None,
+        n_classes: int,
+        add_background: bool = True,
+        smooth: float = 1e-5,
+        apply_softmax: bool = True,
+        reduction: str = "mean",
+        class_weights: list[float] = None,
     ):
         """
         Args:
             n_classes (int): Number of foreground classes
-            background (bool): Whether background is included in n_classes count
+            add_background (bool): Whether background is included in n_classes count
             smooth (float): Small value to avoid division by zero
             apply_softmax (bool): Whether to apply softmax to the input logits
             reduction (str): 'none', 'mean', or 'sum'
@@ -38,13 +38,13 @@ class SoftDiceLoss(nn.Module):
         """
         super(SoftDiceLoss, self).__init__()
         self.n_classes = n_classes
-        self.background = background
+        self.add_background = add_background
         self.smooth = smooth
         self.apply_softmax = apply_softmax
         self.reduction = reduction
 
         # If background is separate, total classes is n_classes + 1
-        self.total_classes = n_classes if not background else n_classes + 1
+        self.total_classes = n_classes + 1 if add_background else n_classes
 
         # Setup class weights if provided
         if class_weights is not None:
@@ -53,7 +53,7 @@ class SoftDiceLoss(nn.Module):
             ), f"Class weights length {len(class_weights)} doesn't match total classes {self.total_classes}"
             self.class_weights = torch.tensor(class_weights, dtype=torch.float32)
         else:
-            self.class_weights = None
+            self.class_weights = torch.ones(1, self.total_classes)
 
     def forward(self, inputs, targets):
         """
@@ -91,7 +91,7 @@ class SoftDiceLoss(nn.Module):
         )
 
         dice_loss = torch.ones(1, self.n_classes).to(dice_scores.device) - dice_scores
-
+        dice_loss = dice_scores * self.class_weights.to(dice_scores.device)
         if self.reduction == "none":
             return dice_loss
         elif self.reduction == "sum":
