@@ -37,6 +37,7 @@ class SegemetationDataset(Dataset):
         images_path: str | Path,
         labels_path: Optional[str | Path] = None,
         labels_yaml: str | Path = "../../configs/label_ids.yaml",
+        classes_to_exclude: list[str] | str = None,
     ):
         """
         images_path: path to where the images are contained.
@@ -49,7 +50,17 @@ class SegemetationDataset(Dataset):
             self.label_to_id = yaml.safe_load(label_file)
 
         self.id_to_label = {v: k for k, v in self.label_to_id.items()}
+        if classes_to_exclude:
+            self.exclude_classes(classes_to_exclude)
         self.set_up()
+
+    def exclude_classes(self, classes_to_exclude: list[str] | str) -> None:
+        if isinstance(classes_to_exclude, str):
+            classes_to_exclude = [classes_to_exclude]
+        self.label_to_id = {
+            k: v for k, v in self.label_to_id.items() if k not in classes_to_exclude
+        }
+        self.id_to_label = {v: k for k, v in self.label_to_id.items()}
 
     def set_up(self) -> None:
         labels = self.load_labels(self.labels_path)
@@ -96,6 +107,8 @@ class SegemetationDataset(Dataset):
             return None
         label_masks = np.zeros([len(self.label_to_id), *image_size])
         for annot, polygons in annotations.items():
+            if annot not in self.label_to_id.keys():
+                continue
             for polygon in polygons:
                 fillPoly(label_masks[self.label_to_id[annot]], pts=[polygon], color=1)
 
@@ -104,6 +117,7 @@ class SegemetationDataset(Dataset):
         return torch.tensor(label_masks)
 
     def __getitem__(self, index) -> tuple[torch.Tensor | None]:
+        index = index % 20
         data_item: SegDataItem = self.data[index]
         input_image = Image.open(data_item.image_path)
         label_masks = self.get_target_mask(input_image.size, data_item.annotations)
@@ -116,7 +130,7 @@ class SegemetationDataset(Dataset):
     def __len__(self):
         return len(self.data)
 
-    def get_class_weights(self, tol=1e-5) -> np.ndarray:
+    def get_class_weights(self) -> np.ndarray:
         """
         A class weight of class is calculated as the mean
         inverse area of the class (segmentation region), normalized

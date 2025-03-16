@@ -2,29 +2,37 @@ import torch
 import torch.nn as nn
 
 
+class ResidualConv(nn.Module):
+    def __init__(
+        self, channels: int, kernel_size: int, activation: nn.Module = nn.LeakyReLU()
+    ):
+        super().__init__()
+        self.norm = nn.BatchNorm2d(channels)
+        self.activation = activation
+        self.conv = nn.Conv2d(
+            kernel_size=kernel_size,
+            in_channels=channels,
+            out_channels=channels,
+            padding="same",
+        )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        skip = x
+        x = self.norm(x)
+        x = self.activation(x)
+        x = self.conv(x)
+        return x + skip
+
+
 class UpLayer(nn.Module):
     def __init__(self, in_channels: int, out_channels: int, kernel_size, pool: bool):
         super().__init__()
 
         self.layers = nn.Sequential(
+            ResidualConv(channels=in_channels, kernel_size=kernel_size),
+            ResidualConv(channels=in_channels, kernel_size=kernel_size),
             nn.BatchNorm2d(in_channels),
-            nn.SELU(),
-            nn.Conv2d(
-                kernel_size=kernel_size,
-                in_channels=in_channels,
-                out_channels=in_channels,
-                padding="same",
-            ),
-            nn.BatchNorm2d(in_channels),
-            nn.SELU(),
-            nn.Conv2d(
-                kernel_size=kernel_size,
-                in_channels=in_channels,
-                out_channels=in_channels,
-                padding="same",
-            ),
-            nn.BatchNorm2d(in_channels),
-            nn.SELU(),
+            nn.LeakyReLU(),
             nn.Conv2d(
                 kernel_size=kernel_size,
                 in_channels=in_channels,
@@ -60,22 +68,8 @@ class DownLayer(nn.Module):
                 out_channels=out_channels,
                 padding="same",
             ),
-            nn.BatchNorm2d(out_channels),
-            nn.SELU(),
-            nn.Conv2d(
-                kernel_size=kernel_size,
-                in_channels=out_channels,
-                out_channels=out_channels,
-                padding="same",
-            ),
-            nn.BatchNorm2d(out_channels),
-            nn.SELU(),
-            nn.Conv2d(
-                kernel_size=kernel_size,
-                in_channels=out_channels,
-                out_channels=out_channels,
-                padding="same",
-            ),
+            ResidualConv(channels=out_channels, kernel_size=kernel_size),
+            ResidualConv(channels=out_channels, kernel_size=kernel_size),
         )
         self.pool = (
             nn.MaxPool2d(kernel_size=(2, 2), stride=(2, 2)) if pool else nn.Identity()
@@ -84,6 +78,16 @@ class DownLayer(nn.Module):
     def forward(self, x):
         intermediate = self.layers(x)
         return self.pool(intermediate), intermediate
+
+
+class StabileSoftmax(nn.Module):
+    def __init__(self, dim: int = -3):
+        super().__init__()
+        self.softmax = nn.Softmax2d(dim=dim)
+
+    def forward(self, x):
+        x - torch.max(x, keepdim=True, dim=-3).values
+        return self.softmax(x)
 
 
 class UNet(nn.Module):
@@ -121,7 +125,7 @@ class UNet(nn.Module):
                 for i in range(len(channels) - 1)
             ]
         )
-        self.softmax = nn.Softmax(dim=-3) if apply_softmax else nn.Identity()
+        self.softmax = StabileSoftmax(dim=-3) if apply_softmax else nn.Identity()
 
     def forward(self, image: torch.Tensor) -> torch.Tensor:
         intermediate: list[torch.Tensor] = []
@@ -135,5 +139,5 @@ class UNet(nn.Module):
             image = up_layer(image, skip)
         # NOTE: We use BCEWithLogitsLoss which means
         # the loss itself implements the sigmoid.
-        image = image - torch.max(image, keepdim=True, dim=-3).values
+
         return self.softmax(image)
