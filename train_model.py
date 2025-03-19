@@ -40,7 +40,7 @@ def main(config_path: str | Path):
     mlflow.set_experiment(configs["experiment"])
     logger.info("Setting up datasets...")
     train_set, validation_set = random_split(
-        SegemetationDataset(
+        SegmentationDataset(
             images_path=Path(configs["data_path"], "train"),
             labels_path=Path(configs["data_path"], "polygons.jsonl"),
             labels_yaml="configs/label_ids.yaml",
