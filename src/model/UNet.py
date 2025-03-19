@@ -135,9 +135,6 @@ class UNet(nn.Module):
 
         for up_layer in self.uplayers:
             skip = intermediate.pop()
-            # image = torch.cat([image, skip], dim=-3)
             image = up_layer(image, skip)
-        # NOTE: We use BCEWithLogitsLoss which means
-        # the loss itself implements the sigmoid.
 
         return self.softmax(image)

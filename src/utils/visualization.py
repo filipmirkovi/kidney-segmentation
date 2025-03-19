@@ -4,7 +4,13 @@ import torch
 from torchvision.utils import draw_segmentation_masks, make_grid
 
 
-def make_images_with_masks(image: torch.Tensor, masks: torch.Tensor) -> plt.Figure:
+def make_images_with_masks(
+    image: torch.Tensor,
+    masks: torch.Tensor,
+    num_classes: int,
+    colors: list[str] = None,
+    alpha: float = 0.6,
+) -> plt.Figure:
     assert (
         len(image.shape) == 4
     ), f"The image should be batched! It has shape {image.shape}, but shape B,C,H,W is expected!"
@@ -16,7 +22,9 @@ def make_images_with_masks(image: torch.Tensor, masks: torch.Tensor) -> plt.Figu
     batch_size = image.shape[0]
     image = image.mul(0.5).add(0.5)
     masked_images = [
-        draw_segmentation_masks(image[i], binary_masks[i], alpha=0.4)
+        draw_segmentation_masks(
+            image[i], binary_masks[i][:num_classes], alpha=alpha, colors=colors
+        )
         for i in range(batch_size)
     ]
     image_grid = make_grid(masked_images, nrow=2)

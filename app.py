@@ -1,12 +1,9 @@
-import os
-import zipfile
 from pathlib import Path
 import streamlit as st
 import mlflow
-from tqdm import tqdm
 import torch
 from torch.utils.data import DataLoader
-
+import matplotlib.pyplot as plt
 
 from src.app_utils import extract_zipfile, streamify_string
 from src.dataset.SegmentationDataset import SegemetationDataset
@@ -17,7 +14,13 @@ data_dir = "app_data/data/"
 save_dir = "app_data/output/"
 model_dir = "app_data/model/"
 config_dir = "configs"
+device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
+
+st.set_page_config(
+    page_title="Kidney Segmentation",  # This sets the browser tab title
+    page_icon="💡",  # This sets the icon (can be an emoji or path to an image)
+)
 
 st.image("app_data/resources/logo.png")
 
@@ -27,7 +30,6 @@ if "welcome_streamed" not in st.session_state:
     # This variable will store the complete welcome message after streaming
     st.session_state.welcome_complete = ""
 
-# Create a container to hold the welcome message
 welcome_container = st.empty()
 if not st.session_state.welcome_streamed:
     welcome_text = """
@@ -40,11 +42,9 @@ if not st.session_state.welcome_streamed:
             streamify_string(welcome_text, pause_time=0.01),
         )
 
-    # After streaming, store the complete message and mark as streamed
     st.session_state.welcome_complete = welcome_text
     st.session_state.welcome_streamed = True
 else:
-    # If already streamed, just display the complete message immediately
     welcome_container.markdown(st.session_state.welcome_complete)
 
 
@@ -80,18 +80,19 @@ if uploaded_zip is not None:
 
         model: torch.nn.Module = mlflow.pytorch.load_model(
             model_uri=Path(model_dir, "final_model")
-        )
+        ).to(device)
         model.eval()
         with torch.no_grad():
             for i, batch in enumerate(loader):
                 image, _ = batch
-                segment_masks = model(image)
-                make_images_with_masks(
+                segment_masks = model(image.to(device))
+                figure: plt.Figure = make_images_with_masks(
                     image=image,
                     masks=segment_masks,
-                    save_path=Path(save_dir, f"_batch_{i+1}.png"),
+                    num_classes=3,
+                    colors=["orange", "blue", "green"],
                 )
+                figure.savefig(f"{save_dir}/results_{i}.png")
         progress_bar.progress(i + 1, f"Processing batch: {i+1}/{n_batches}")
 
         st.write_stream(streamify_string(f"Results saved to `{save_dir}`."))
-# st.selectbox(label="Select the model output you want to show ",options=)

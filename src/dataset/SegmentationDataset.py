@@ -37,7 +37,6 @@ class SegemetationDataset(Dataset):
         images_path: str | Path,
         labels_path: Optional[str | Path] = None,
         labels_yaml: str | Path = "../../configs/label_ids.yaml",
-        classes_to_exclude: list[str] | str = None,
     ):
         """
         images_path: path to where the images are contained.
@@ -50,17 +49,7 @@ class SegemetationDataset(Dataset):
             self.label_to_id = yaml.safe_load(label_file)
 
         self.id_to_label = {v: k for k, v in self.label_to_id.items()}
-        if classes_to_exclude:
-            self.exclude_classes(classes_to_exclude)
         self.set_up()
-
-    def exclude_classes(self, classes_to_exclude: list[str] | str) -> None:
-        if isinstance(classes_to_exclude, str):
-            classes_to_exclude = [classes_to_exclude]
-        self.label_to_id = {
-            k: v for k, v in self.label_to_id.items() if k not in classes_to_exclude
-        }
-        self.id_to_label = {v: k for k, v in self.label_to_id.items()}
 
     def set_up(self) -> None:
         labels = self.load_labels(self.labels_path)
@@ -72,9 +61,7 @@ class SegemetationDataset(Dataset):
                 + list(self.images_path.glob("*.jpeg"))
             )
             self.data = [
-                SegDataItem(
-                    id=img_path.stem, image_path=Path(self.images_path, img_path)
-                )
+                SegDataItem(id=img_path.stem, image_path=Path(img_path), annotations=[])
                 for img_path in image_files
             ]
         else:
@@ -104,7 +91,7 @@ class SegemetationDataset(Dataset):
         self, image_size, annotations: dict[str, list[np.ndarray]]
     ) -> torch.Tensor | None:
         if not annotations:
-            return None
+            return torch.zeros((1,))
         label_masks = np.zeros([len(self.label_to_id), *image_size])
         for annot, polygons in annotations.items():
             if annot not in self.label_to_id.keys():

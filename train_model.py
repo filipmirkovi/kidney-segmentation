@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 import torch
 import mlflow
@@ -6,10 +7,10 @@ from loguru import logger
 import yaml
 from torch.utils.data import DataLoader, random_split
 
-# from src.model.UNet import UNet
+from src.model.UNet import UNet
 from src.model.loss import SoftDiceLoss
 from src.model.utils import num_params
-from segmentation_models_pytorch import Unet
+
 from src.dataset.SegmentationDataset import SegemetationDataset
 from src.Trainer import Trainer
 
@@ -21,8 +22,6 @@ logger.add(
     level="INFO",  # Log level
     format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {message}",  # Log format
 )
-import sys
-
 logger.add(
     sys.stdout, format="{time} {level} {message}", filter="my_module", level="INFO"
 )
@@ -39,7 +38,6 @@ def main(config_path: str | Path):
 
     mlflow.set_tracking_uri(uri=configs["mlflow_tracking_uri"])
     mlflow.set_experiment(configs["experiment"])
-    # torch.random.seed(random_seed)
     logger.info("Setting up datasets...")
     train_set, validation_set = random_split(
         SegemetationDataset(
@@ -54,6 +52,7 @@ def main(config_path: str | Path):
         f"{class_name} : {class_weights[i]}"
         for i, class_name in enumerate(train_set.dataset.label_to_id)
     ]
+
     logger.success(f"Calculated class weights: " + "\n".join(cls_weight_report))
     train_dataloader = DataLoader(
         train_set, batch_size=configs["batch_size"], shuffle=True
@@ -65,10 +64,11 @@ def main(config_path: str | Path):
 
     logger.info("Initializing model...")
 
-    model: torch.nn.Module = Unet(
+    model = UNet(
         in_channels=3,
-        classes=configs["num_segmentation_regions"] + 1,
-        activation="softmax",
+        num_classes=configs["num_segmentation_regions"] + 1,
+        apply_softmax=False,
+        hidden_channels=[16, 32, 64],
     )
 
     logger.success(
@@ -79,7 +79,7 @@ def main(config_path: str | Path):
 
     model = model.to(configs["device"])
 
-    optimizer = torch.optim.AdamW(
+    optimizer = torch.optim.Adam(
         model.parameters(),
         lr=float(configs["lr"]),
         weight_decay=float(configs["weight_decay"]),
@@ -87,16 +87,19 @@ def main(config_path: str | Path):
     scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
         optimizer, T_0=10, T_mult=2, eta_min=1e-6
     )
+
     loss = torch.nn.CrossEntropyLoss(
         reduction="none",
         weight=torch.tensor(class_weights).to(configs["device"]),
     )
-    # SoftDiceLoss(
-    #    n_classes=int(configs["num_segmentation_regions"]) + 1,
-    #    add_background=False,
-    #    reduction="none",
-    #    class_weights=class_weights,
-    # )
+
+    SoftDiceLoss(
+        n_classes=int(configs["num_segmentation_regions"]) + 1,
+        add_background=False,
+        reduction="none",
+        class_weights=class_weights,
+    )
+
     logger.info("Initializing trainer...")
     trainer = Trainer(
         num_epochs=int(configs["num_epochs"]),

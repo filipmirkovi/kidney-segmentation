@@ -12,6 +12,7 @@ from tqdm import tqdm
 import yaml
 from loguru import logger
 
+
 from src.utils.metrics import LossMonitor, IOUScore, NumSteps
 from src.utils.visualization import make_images_with_masks
 
@@ -74,8 +75,7 @@ class Trainer:
                     -1,
                     -2,
                 )
-            )  # -3))
-
+            )
             loss.mean().backward()
             torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1)
             self.optimizer.step()
@@ -117,7 +117,7 @@ class Trainer:
                         -1,
                         -2,
                     )
-                )  # -3))
+                )
                 self.iou_score.update(y_pred, y)
                 self.loss_monitor.update(loss)
 
@@ -154,8 +154,17 @@ class Trainer:
             self.model_info = mlflow.pytorch.log_model(
                 model, "model", signature=signature
             )
+            self.best_model = model
+            self.best_model_signature = signature
             self.logger.info(f"Logged Model Info: {self.model_info}")
             self.best_iou = new_score
+
+    def __del__(self):
+        if hasattr(self, "best_model"):
+            logger.info("Saving best model...")
+            mlflow.pytorch.save_model(
+                self.best_model, "best_model", self.best_model_signature
+            )
 
     def train(
         self,
@@ -179,6 +188,8 @@ class Trainer:
             if epoch_idx % self.validate_every == 0:
                 self._validation_epoch()
 
+        self.teardown()
+
     def visualization_callback(
         self,
         model: nn.Module,
@@ -201,7 +212,9 @@ class Trainer:
                 all_masks.append(masks.to("cpu")[:, :3, ...])
 
         figure = make_images_with_masks(
-            torch.cat(all_images, dim=0), torch.cat(all_masks, dim=0)
+            torch.cat(all_images, dim=0),
+            torch.cat(all_masks, dim=0),
+            num_classes=len(self.id_to_label) - 1,
         )
 
         mlflow.log_figure(
