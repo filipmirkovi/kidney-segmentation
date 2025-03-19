@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 
 from src.app_utils import extract_zipfile, streamify_string
-from src.dataset.SegmentationDataset import SegemetationDataset
+from src.dataset.SegmentationDataset import SegmentationDataset
 from src.utils.visualization import make_images_with_masks
 
 
@@ -68,7 +68,7 @@ if uploaded_zip is not None:
 
     st.write(f"**to `{data_dir}`**")
 
-    dataset = SegemetationDataset(
+    dataset = SegmentationDataset(
         images_path=data_dir, labels_yaml=Path(config_dir, "label_ids.yaml")
     )
     loader = DataLoader(dataset=dataset, batch_size=4, num_workers=4)

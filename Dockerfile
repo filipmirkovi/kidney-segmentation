@@ -1,9 +1,16 @@
-FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu20.04
+FROM pytorch/pytorch
 
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
+    libgl1-mesa-glx libglib2.0-0 \
+    python3-dev python3-numpy \
     && rm -rf /var/lib/apt/lists/*
+
+
+
+
+
 
 WORKDIR /app
 
@@ -11,7 +18,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Install the Python dependencies (including GPU libraries)
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the application code into the container
 COPY . .

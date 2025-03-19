@@ -163,7 +163,7 @@ class Trainer:
         if hasattr(self, "best_model"):
             logger.info("Saving best model...")
             mlflow.pytorch.save_model(
-                self.best_model, "best_model", self.best_model_signature
+                self.best_model.to("cpu"), "best_model", self.best_model_signature
             )
 
     def train(

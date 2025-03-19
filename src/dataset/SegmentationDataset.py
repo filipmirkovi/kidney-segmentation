@@ -31,7 +31,7 @@ def normalize_image(img: torch.Tensor) -> torch.Tensor:
     return img
 
 
-class SegemetationDataset(Dataset):
+class SegmentationDataset(Dataset):
     def __init__(
         self,
         images_path: str | Path,

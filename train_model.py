@@ -11,7 +11,7 @@ from src.model.UNet import UNet
 from src.model.loss import SoftDiceLoss
 from src.model.utils import num_params
 
-from src.dataset.SegmentationDataset import SegemetationDataset
+from src.dataset.SegmentationDataset import SegmentationDataset
 from src.Trainer import Trainer
 
 
