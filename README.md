@@ -2,15 +2,25 @@
 
 ## Contents
 1. **Training a Segmentation Model**
+
     **1.1 Setting up the environment**
+
     **1.2 Setting up your `configs`**
+
     **1.3 Getting the data**
+
     **1.4 Model tracking**
+
     **1.5 Running the training script**
+
 2. **Model Inference**
+
     **2.1 Starting up the application**
+
     **2.2 Performing inference**
+
 3. **Containerizing the application**
+
 4. **Modeling details**
 
 
