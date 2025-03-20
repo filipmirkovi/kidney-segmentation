@@ -12,6 +12,6 @@ data/**
 !app_data/output/.gitkeep
 !app_data/.gitkeep
 
-app_data/data/*
-app_data/model/*
+app_data/data/*.tif
+!app_data/model/
 app_data/output/*
