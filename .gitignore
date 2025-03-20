@@ -6,3 +6,11 @@ mlruns/**
 mlartifacts/**
 data/**
 *.log
+
+!app_data/data/.gitkeep
+!app_data/model/.gitkeep
+!app_data/output/.gitkeep
+
+app_data/data/*
+app_data/model/*
+app_data/output/*
