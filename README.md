@@ -1,6 +1,17 @@
 # kidney-segmentation
 
-
+## Contents
+1. **Training a Segmentation Model**
+    **1.1 Setting up the environment**
+    **1.2 Setting up your `configs`**
+    **1.3 Getting the data**
+    **1.4 Model tracking**
+    **1.5 Running the training script**
+2. **Model Inference**
+    **2.1 Starting up the application**
+    **2.2 Performing inference**
+3. **Containerizing the application**
+4. **Modeling details**
 
 
 
@@ -98,8 +109,11 @@ To build the docker image simply navigate to the app folder (the one the `Docker
 docker build -t segmentation .
 ```
 **NOTE:** This may require sudo or administrator privilages.
-The whole building procedure might take a while, since we're using a fairly large base image, and installing heavy Python libraires such as Pytorch. Once, however, the image is successfuly built you can run it by using the following bulky command
+The whole building procedure might take a while, since we're using a fairly large base image, and installing heavy Python libraires such as Pytorch. Once, however, the image is successfuly built you can run it by using the following lengthy command:
 ```
 docker run -p 8501:8501 --mount type=bind,src=/path_to_your_repo/kidney-segmentation/app_data,dst=/app/app_data segmentation 
 ```
 This command wil bun the built `segmentation` application image, forward host port 8501 to the container port 8501, and mount a volume `/path_to_your_repo/kidney-segmentation/app_data` to the container `app/app_data` folder, that way the segmentation images the docker app creates will be retained after the application is shut down.
+
+
+### 4. Modeling details

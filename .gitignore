@@ -4,7 +4,12 @@ __pycache__/
 **/__pycache__/**
 mlruns/**
 mlartifacts/**
-data/**
+
+data/*json
+data/*csv
+data/train/*.tif
+data/test/*.tif
+
 *.log
 
 !app_data/data/.gitkeep
