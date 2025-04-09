@@ -188,8 +188,6 @@ class Trainer:
             if epoch_idx % self.validate_every == 0:
                 self._validation_epoch()
 
-        self.teardown()
-
     def visualization_callback(
         self,
         model: nn.Module,
