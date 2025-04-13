@@ -7,7 +7,7 @@ from loguru import logger
 import yaml
 from torch.utils.data import DataLoader, random_split
 
-from src.model.UNet import UNet
+from src.model.UNet.UNet import UNet
 from src.model.loss import SoftDiceLoss
 from src.model.utils import num_params
 

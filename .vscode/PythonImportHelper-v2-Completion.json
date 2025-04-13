@@ -1,0 +1,844 @@
+[
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Literal",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "defaultdict",
+        "importPath": "collections",
+        "description": "collections",
+        "isExtraImport": true,
+        "detail": "collections",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "dataclass",
+        "importPath": "dataclasses",
+        "description": "dataclasses",
+        "isExtraImport": true,
+        "detail": "dataclasses",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "Image",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "torch",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "torch",
+        "description": "torch",
+        "detail": "torch",
+        "documentation": {}
+    },
+    {
+        "label": "yaml",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "yaml",
+        "description": "yaml",
+        "detail": "yaml",
+        "documentation": {}
+    },
+    {
+        "label": "fillPoly",
+        "importPath": "cv2",
+        "description": "cv2",
+        "isExtraImport": true,
+        "detail": "cv2",
+        "documentation": {}
+    },
+    {
+        "label": "Dataset",
+        "importPath": "torch.utils.data",
+        "description": "torch.utils.data",
+        "isExtraImport": true,
+        "detail": "torch.utils.data",
+        "documentation": {}
+    },
+    {
+        "label": "DataLoader",
+        "importPath": "torch.utils.data",
+        "description": "torch.utils.data",
+        "isExtraImport": true,
+        "detail": "torch.utils.data",
+        "documentation": {}
+    },
+    {
+        "label": "DataLoader",
+        "importPath": "torch.utils.data",
+        "description": "torch.utils.data",
+        "isExtraImport": true,
+        "detail": "torch.utils.data",
+        "documentation": {}
+    },
+    {
+        "label": "DataLoader",
+        "importPath": "torch.utils.data",
+        "description": "torch.utils.data",
+        "isExtraImport": true,
+        "detail": "torch.utils.data",
+        "documentation": {}
+    },
+    {
+        "label": "random_split",
+        "importPath": "torch.utils.data",
+        "description": "torch.utils.data",
+        "isExtraImport": true,
+        "detail": "torch.utils.data",
+        "documentation": {}
+    },
+    {
+        "label": "pil_to_tensor",
+        "importPath": "torchvision.transforms.functional",
+        "description": "torchvision.transforms.functional",
+        "isExtraImport": true,
+        "detail": "torchvision.transforms.functional",
+        "documentation": {}
+    },
+    {
+        "label": "tqdm",
+        "importPath": "tqdm",
+        "description": "tqdm",
+        "isExtraImport": true,
+        "detail": "tqdm",
+        "documentation": {}
+    },
+    {
+        "label": "tqdm",
+        "importPath": "tqdm",
+        "description": "tqdm",
+        "isExtraImport": true,
+        "detail": "tqdm",
+        "documentation": {}
+    },
+    {
+        "label": "torch.nn",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "torch.nn",
+        "description": "torch.nn",
+        "detail": "torch.nn",
+        "documentation": {}
+    },
+    {
+        "label": "torch.nn.functional",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "torch.nn.functional",
+        "description": "torch.nn.functional",
+        "detail": "torch.nn.functional",
+        "documentation": {}
+    },
+    {
+        "label": "einops",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "einops",
+        "description": "einops",
+        "detail": "einops",
+        "documentation": {}
+    },
+    {
+        "label": "ProjectionFCNN",
+        "importPath": "src.model.Perciever.Layers.FCNN",
+        "description": "src.model.Perciever.Layers.FCNN",
+        "isExtraImport": true,
+        "detail": "src.model.Perciever.Layers.FCNN",
+        "documentation": {}
+    },
+    {
+        "label": "ProjectionFCNN",
+        "importPath": "src.model.Perciever.Layers.FCNN",
+        "description": "src.model.Perciever.Layers.FCNN",
+        "isExtraImport": true,
+        "detail": "src.model.Perciever.Layers.FCNN",
+        "documentation": {}
+    },
+    {
+        "label": "MultiHeadSelfAttention",
+        "importPath": "src.model.Perciever.Layers.Attention",
+        "description": "src.model.Perciever.Layers.Attention",
+        "isExtraImport": true,
+        "detail": "src.model.Perciever.Layers.Attention",
+        "documentation": {}
+    },
+    {
+        "label": "MultiHeadCrossAttention",
+        "importPath": "src.model.Perciever.Layers.Attention",
+        "description": "src.model.Perciever.Layers.Attention",
+        "isExtraImport": true,
+        "detail": "src.model.Perciever.Layers.Attention",
+        "documentation": {}
+    },
+    {
+        "label": "MultiHeadSelfAttention",
+        "importPath": "src.model.Perciever.Layers.Attention",
+        "description": "src.model.Perciever.Layers.Attention",
+        "isExtraImport": true,
+        "detail": "src.model.Perciever.Layers.Attention",
+        "documentation": {}
+    },
+    {
+        "label": "Metric",
+        "importPath": "torchmetrics",
+        "description": "torchmetrics",
+        "isExtraImport": true,
+        "detail": "torchmetrics",
+        "documentation": {}
+    },
+    {
+        "label": "matplotlib.pyplot",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "matplotlib.pyplot",
+        "description": "matplotlib.pyplot",
+        "detail": "matplotlib.pyplot",
+        "documentation": {}
+    },
+    {
+        "label": "draw_segmentation_masks",
+        "importPath": "torchvision.utils",
+        "description": "torchvision.utils",
+        "isExtraImport": true,
+        "detail": "torchvision.utils",
+        "documentation": {}
+    },
+    {
+        "label": "make_grid",
+        "importPath": "torchvision.utils",
+        "description": "torchvision.utils",
+        "isExtraImport": true,
+        "detail": "torchvision.utils",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "Optimizer",
+        "importPath": "torch.optim",
+        "description": "torch.optim",
+        "isExtraImport": true,
+        "detail": "torch.optim",
+        "documentation": {}
+    },
+    {
+        "label": "LRScheduler",
+        "importPath": "torch.optim.lr_scheduler",
+        "description": "torch.optim.lr_scheduler",
+        "isExtraImport": true,
+        "detail": "torch.optim.lr_scheduler",
+        "documentation": {}
+    },
+    {
+        "label": "mlflow",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "mlflow",
+        "description": "mlflow",
+        "detail": "mlflow",
+        "documentation": {}
+    },
+    {
+        "label": "infer_signature",
+        "importPath": "mlflow.models",
+        "description": "mlflow.models",
+        "isExtraImport": true,
+        "detail": "mlflow.models",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "importPath": "loguru",
+        "description": "loguru",
+        "isExtraImport": true,
+        "detail": "loguru",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "importPath": "loguru",
+        "description": "loguru",
+        "isExtraImport": true,
+        "detail": "loguru",
+        "documentation": {}
+    },
+    {
+        "label": "LossMonitor",
+        "importPath": "src.utils.metrics",
+        "description": "src.utils.metrics",
+        "isExtraImport": true,
+        "detail": "src.utils.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "IOUScore",
+        "importPath": "src.utils.metrics",
+        "description": "src.utils.metrics",
+        "isExtraImport": true,
+        "detail": "src.utils.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "NumSteps",
+        "importPath": "src.utils.metrics",
+        "description": "src.utils.metrics",
+        "isExtraImport": true,
+        "detail": "src.utils.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "make_images_with_masks",
+        "importPath": "src.utils.visualization",
+        "description": "src.utils.visualization",
+        "isExtraImport": true,
+        "detail": "src.utils.visualization",
+        "documentation": {}
+    },
+    {
+        "label": "make_images_with_masks",
+        "importPath": "src.utils.visualization",
+        "description": "src.utils.visualization",
+        "isExtraImport": true,
+        "detail": "src.utils.visualization",
+        "documentation": {}
+    },
+    {
+        "label": "zipfile",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "zipfile",
+        "description": "zipfile",
+        "detail": "zipfile",
+        "documentation": {}
+    },
+    {
+        "label": "BytesIO",
+        "importPath": "io",
+        "description": "io",
+        "isExtraImport": true,
+        "detail": "io",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "streamlit",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "streamlit",
+        "description": "streamlit",
+        "detail": "streamlit",
+        "documentation": {}
+    },
+    {
+        "label": "extract_zipfile",
+        "importPath": "src.app_utils",
+        "description": "src.app_utils",
+        "isExtraImport": true,
+        "detail": "src.app_utils",
+        "documentation": {}
+    },
+    {
+        "label": "streamify_string",
+        "importPath": "src.app_utils",
+        "description": "src.app_utils",
+        "isExtraImport": true,
+        "detail": "src.app_utils",
+        "documentation": {}
+    },
+    {
+        "label": "SegmentationDataset",
+        "importPath": "src.dataset.SegmentationDataset",
+        "description": "src.dataset.SegmentationDataset",
+        "isExtraImport": true,
+        "detail": "src.dataset.SegmentationDataset",
+        "documentation": {}
+    },
+    {
+        "label": "SegmentationDataset",
+        "importPath": "src.dataset.SegmentationDataset",
+        "description": "src.dataset.SegmentationDataset",
+        "isExtraImport": true,
+        "detail": "src.dataset.SegmentationDataset",
+        "documentation": {}
+    },
+    {
+        "label": "ArgumentParser",
+        "importPath": "argparse",
+        "description": "argparse",
+        "isExtraImport": true,
+        "detail": "argparse",
+        "documentation": {}
+    },
+    {
+        "label": "UNet",
+        "importPath": "src.model.UNet.UNet",
+        "description": "src.model.UNet.UNet",
+        "isExtraImport": true,
+        "detail": "src.model.UNet.UNet",
+        "documentation": {}
+    },
+    {
+        "label": "SoftDiceLoss",
+        "importPath": "src.model.loss",
+        "description": "src.model.loss",
+        "isExtraImport": true,
+        "detail": "src.model.loss",
+        "documentation": {}
+    },
+    {
+        "label": "num_params",
+        "importPath": "src.model.utils",
+        "description": "src.model.utils",
+        "isExtraImport": true,
+        "detail": "src.model.utils",
+        "documentation": {}
+    },
+    {
+        "label": "Trainer",
+        "importPath": "src.Trainer",
+        "description": "src.Trainer",
+        "isExtraImport": true,
+        "detail": "src.Trainer",
+        "documentation": {}
+    },
+    {
+        "label": "SegDataItem",
+        "kind": 6,
+        "importPath": "src.dataset.SegmentationDataset",
+        "description": "src.dataset.SegmentationDataset",
+        "peekOfCode": "class SegDataItem:\n    id: str\n    image_path: str | Path\n    # `annotations` is a dictionary the type of\n    # segmentation area as keys (e.g. 'blood_vessel') and a list of np.ndarray as\n    # values. Those values represent polygon points, and the poylgons are the\n    # boundaries of segmetnation maps.\n    annotations: Optional[dict[str, list[np.ndarray]]] = False\ndef normalize_image(img: torch.Tensor) -> torch.Tensor:\n    img.div_(255.0)",
+        "detail": "src.dataset.SegmentationDataset",
+        "documentation": {}
+    },
+    {
+        "label": "SegmentationDataset",
+        "kind": 6,
+        "importPath": "src.dataset.SegmentationDataset",
+        "description": "src.dataset.SegmentationDataset",
+        "peekOfCode": "class SegmentationDataset(Dataset):\n    def __init__(\n        self,\n        images_path: str | Path,\n        labels_path: Optional[str | Path] = None,\n        labels_yaml: str | Path = \"../../configs/label_ids.yaml\",\n    ):\n        \"\"\"\n        images_path: path to where the images are contained.\n        labels_path:Optional: path to jsonl file where labels are contained.",
+        "detail": "src.dataset.SegmentationDataset",
+        "documentation": {}
+    },
+    {
+        "label": "normalize_image",
+        "kind": 2,
+        "importPath": "src.dataset.SegmentationDataset",
+        "description": "src.dataset.SegmentationDataset",
+        "peekOfCode": "def normalize_image(img: torch.Tensor) -> torch.Tensor:\n    img.div_(255.0)\n    img = (img - 0.5) / 0.5\n    return img\nclass SegmentationDataset(Dataset):\n    def __init__(\n        self,\n        images_path: str | Path,\n        labels_path: Optional[str | Path] = None,\n        labels_yaml: str | Path = \"../../configs/label_ids.yaml\",",
+        "detail": "src.dataset.SegmentationDataset",
+        "documentation": {}
+    },
+    {
+        "label": "SelfAttentionLayer",
+        "kind": 6,
+        "importPath": "src.model.Perciever.Layers.Attention",
+        "description": "src.model.Perciever.Layers.Attention",
+        "peekOfCode": "class SelfAttentionLayer(nn.Module):\n    def __init__(self, input_size: int, hidden_size: int, skip_connection: bool):\n        super().__init__()\n        self.key_projection = ProjectionFCNN(input_size, hidden_size, norm=True)\n        self.query_projection = ProjectionFCNN(input_size, hidden_size, norm=True)\n        self.value_projection = ProjectionFCNN(input_size, input_size, norm=True)\n        self.skip_connection = skip_connection\n    def forward(self, input_sequence: torch.Tensor) -> torch.Tensor:\n        \"\"\"\n        input_sequence: batch length channel",
+        "detail": "src.model.Perciever.Layers.Attention",
+        "documentation": {}
+    },
+    {
+        "label": "CrossAttention",
+        "kind": 6,
+        "importPath": "src.model.Perciever.Layers.Attention",
+        "description": "src.model.Perciever.Layers.Attention",
+        "peekOfCode": "class CrossAttention(nn.Module):\n    def __init__(\n        self,\n        query_sequence_size: int,\n        key_value_sequence_size: int,\n        hidden_size: int,\n        skip_connection: bool = True,\n    ):\n        super().__init__()\n        self.key_projection = ProjectionFCNN(",
+        "detail": "src.model.Perciever.Layers.Attention",
+        "documentation": {}
+    },
+    {
+        "label": "MultiHeadSelfAttention",
+        "kind": 6,
+        "importPath": "src.model.Perciever.Layers.Attention",
+        "description": "src.model.Perciever.Layers.Attention",
+        "peekOfCode": "class MultiHeadSelfAttention(nn.Module):\n    def __init__(\n        self,\n        input_size: int,\n        num_heads: int,\n        hidden_size: int,\n        skip_connection: bool = True,\n    ):\n        super().__init__()\n        assert (",
+        "detail": "src.model.Perciever.Layers.Attention",
+        "documentation": {}
+    },
+    {
+        "label": "MultiHeadCrossAttention",
+        "kind": 6,
+        "importPath": "src.model.Perciever.Layers.Attention",
+        "description": "src.model.Perciever.Layers.Attention",
+        "peekOfCode": "class MultiHeadCrossAttention(nn.Module):\n    def __init__(\n        self,\n        num_heads: int,\n        query_sequence_size: int,\n        key_value_sequence_size: int,\n        hidden_size: int,\n        skip_connection: bool = True,\n    ):\n        super().__init__()",
+        "detail": "src.model.Perciever.Layers.Attention",
+        "documentation": {}
+    },
+    {
+        "label": "ProjectionFCNN",
+        "kind": 6,
+        "importPath": "src.model.Perciever.Layers.FCNN",
+        "description": "src.model.Perciever.Layers.FCNN",
+        "peekOfCode": "class ProjectionFCNN(nn.Module):\n    def __init__(\n        self,\n        in_features: int,\n        out_features: int,\n        norm: bool = True,\n        activation: nn.Module = nn.ReLU(),\n    ):\n        super().__init__()\n        layers = []",
+        "detail": "src.model.Perciever.Layers.FCNN",
+        "documentation": {}
+    },
+    {
+        "label": "PositionalEncoding2D",
+        "kind": 6,
+        "importPath": "src.model.Perciever.Encoder",
+        "description": "src.model.Perciever.Encoder",
+        "peekOfCode": "class PositionalEncoding2D(nn.Module):\n    \"\"\"\n    2D Positional Encoding module for Vision Transformers and similar architectures.\n    \"\"\"\n    def __init__(self, height, width, embed_dim, dropout=0.1, temperature=10000.0):\n        \"\"\"\n        Initialize the 2D positional encoding.\n        Args:\n            height (int): Height of the input grid\n            width (int): Width of the input grid",
+        "detail": "src.model.Perciever.Encoder",
+        "documentation": {}
+    },
+    {
+        "label": "ViTPositionalEncoding",
+        "kind": 6,
+        "importPath": "src.model.Perciever.Encoder",
+        "description": "src.model.Perciever.Encoder",
+        "peekOfCode": "class ViTPositionalEncoding(nn.Module):\n    \"\"\"\n    Learnable positional encoding for Vision Transformers.\n    This implementation follows the original ViT approach with learnable parameters.\n    \"\"\"\n    def __init__(self, height, width, embed_dim, dropout=0.1):\n        \"\"\"\n        Initialize the learnable positional encoding.\n        Args:\n            height (int): Height of the input grid",
+        "detail": "src.model.Perciever.Encoder",
+        "documentation": {}
+    },
+    {
+        "label": "PatchEmbedding",
+        "kind": 6,
+        "importPath": "src.model.Perciever.Encoder",
+        "description": "src.model.Perciever.Encoder",
+        "peekOfCode": "class PatchEmbedding(nn.Module):\n    \"\"\"\n    Convert an image into patches and embed them.\n    \"\"\"\n    def __init__(self, img_size=224, patch_size=16, in_channels=3, embed_dim=768):\n        super().__init__()\n        self.img_size = img_size\n        self.patch_size = patch_size\n        self.grid_size = img_size // patch_size\n        self.num_patches = self.grid_size**2",
+        "detail": "src.model.Perciever.Encoder",
+        "documentation": {}
+    },
+    {
+        "label": "get_2d_sincos_pos_encoding",
+        "kind": 2,
+        "importPath": "src.model.Perciever.Encoder",
+        "description": "src.model.Perciever.Encoder",
+        "peekOfCode": "def get_2d_sincos_pos_encoding(\n    height, width, embed_dim, temperature=10000.0, dtype=torch.float32\n):\n    \"\"\"\n    Create 2D sinusoidal positional embeddings for transformers.\n    Args:\n        height (int): Height of the 2D grid\n        width (int): Width of the 2D grid\n        embed_dim (int): Embedding dimension (must be divisible by 4)\n        temperature (float): Temperature parameter for the encoding",
+        "detail": "src.model.Perciever.Encoder",
+        "documentation": {}
+    },
+    {
+        "label": "PercieverProcessor",
+        "kind": 6,
+        "importPath": "src.model.Perciever.PercieverProcessor",
+        "description": "src.model.Perciever.PercieverProcessor",
+        "peekOfCode": "class PercieverProcessor(nn.Module):\n    def __init__(\n        self,\n        latent_size: int = 128,\n        input_size: int = 64,\n        num_perceptions: int = 128,\n        num_attn_heads: int = 8,\n        attention_hidden_size: int = 32,\n    ):\n        super().__init__()",
+        "detail": "src.model.Perciever.PercieverProcessor",
+        "documentation": {}
+    },
+    {
+        "label": "ResidualConv",
+        "kind": 6,
+        "importPath": "src.model.UNet.UNet",
+        "description": "src.model.UNet.UNet",
+        "peekOfCode": "class ResidualConv(nn.Module):\n    def __init__(\n        self, channels: int, kernel_size: int, activation: nn.Module = nn.LeakyReLU()\n    ):\n        super().__init__()\n        self.norm = nn.BatchNorm2d(channels)\n        self.activation = activation\n        self.conv = nn.Conv2d(\n            kernel_size=kernel_size,\n            in_channels=channels,",
+        "detail": "src.model.UNet.UNet",
+        "documentation": {}
+    },
+    {
+        "label": "UpLayer",
+        "kind": 6,
+        "importPath": "src.model.UNet.UNet",
+        "description": "src.model.UNet.UNet",
+        "peekOfCode": "class UpLayer(nn.Module):\n    def __init__(self, in_channels: int, out_channels: int, kernel_size, pool: bool):\n        super().__init__()\n        self.layers = nn.Sequential(\n            ResidualConv(channels=in_channels, kernel_size=kernel_size),\n            ResidualConv(channels=in_channels, kernel_size=kernel_size),\n            nn.BatchNorm2d(in_channels),\n            nn.LeakyReLU(),\n            nn.Conv2d(\n                kernel_size=kernel_size,",
+        "detail": "src.model.UNet.UNet",
+        "documentation": {}
+    },
+    {
+        "label": "DownLayer",
+        "kind": 6,
+        "importPath": "src.model.UNet.UNet",
+        "description": "src.model.UNet.UNet",
+        "peekOfCode": "class DownLayer(nn.Module):\n    def __init__(self, in_channels: int, out_channels: int, kernel_size, pool):\n        super().__init__()\n        self.layers = nn.Sequential(\n            nn.BatchNorm2d(in_channels),\n            nn.SELU(),\n            nn.Conv2d(\n                kernel_size=kernel_size,\n                in_channels=in_channels,\n                out_channels=out_channels,",
+        "detail": "src.model.UNet.UNet",
+        "documentation": {}
+    },
+    {
+        "label": "StabileSoftmax",
+        "kind": 6,
+        "importPath": "src.model.UNet.UNet",
+        "description": "src.model.UNet.UNet",
+        "peekOfCode": "class StabileSoftmax(nn.Module):\n    def __init__(self, dim: int = -3):\n        super().__init__()\n        self.softmax = nn.Softmax2d(dim=dim)\n    def forward(self, x):\n        x - torch.max(x, keepdim=True, dim=-3).values\n        return self.softmax(x)\nclass UNet(nn.Module):\n    def __init__(\n        self,",
+        "detail": "src.model.UNet.UNet",
+        "documentation": {}
+    },
+    {
+        "label": "UNet",
+        "kind": 6,
+        "importPath": "src.model.UNet.UNet",
+        "description": "src.model.UNet.UNet",
+        "peekOfCode": "class UNet(nn.Module):\n    def __init__(\n        self,\n        in_channels: int,\n        num_classes: int,\n        hidden_channels: list[int] = [32, 64, 128],\n        kernel_size=3,\n        apply_softmax: bool = True,\n    ):\n        super().__init__()",
+        "detail": "src.model.UNet.UNet",
+        "documentation": {}
+    },
+    {
+        "label": "SoftDiceLoss",
+        "kind": 6,
+        "importPath": "src.model.loss",
+        "description": "src.model.loss",
+        "peekOfCode": "class SoftDiceLoss(nn.Module):\n    \"\"\"\n    Soft Dice Loss implementation for multi-class segmentation with background class.\n    This implementation:\n    - Handles multiple foreground classes plus a background class\n    - Accepts segmentation masks with class indices as targets\n    - Applies softmax to convert logits to probabilities\n    - Uses a smooth factor to avoid division by zero\n    - Optionally applies class weights to handle class imbalance\n    Optimized for segmentation tasks where targets are masks with class indices.",
+        "detail": "src.model.loss",
+        "documentation": {}
+    },
+    {
+        "label": "num_params",
+        "kind": 2,
+        "importPath": "src.model.utils",
+        "description": "src.model.utils",
+        "peekOfCode": "def num_params(\n    model: nn.Module,\n    units: Literal[\"million\", \"billion\", \"thousand\", \"none\"] = \"million\",\n) -> str:\n    num_params = sum([param.numel() for param in model.parameters()])\n    match units:\n        case \"none\":\n            return f\"{num_params}\"\n        case \"thousand\":\n            return f\"{num_params/1e3} thousand\"",
+        "detail": "src.model.utils",
+        "documentation": {}
+    },
+    {
+        "label": "NumSteps",
+        "kind": 6,
+        "importPath": "src.utils.metrics",
+        "description": "src.utils.metrics",
+        "peekOfCode": "class NumSteps(Metric):\n    def __init__(self, **kwargs):\n        super().__init__(**kwargs)\n        self.add_state(\"steps\", default=torch.tensor(0.0))\n    def update(self):\n        self.steps.add_(1.0)\n    def compute(self):\n        return self.steps\nclass LossMonitor(Metric):\n    def __init__(self, **kwargs):",
+        "detail": "src.utils.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "LossMonitor",
+        "kind": 6,
+        "importPath": "src.utils.metrics",
+        "description": "src.utils.metrics",
+        "peekOfCode": "class LossMonitor(Metric):\n    def __init__(self, **kwargs):\n        super().__init__(**kwargs)\n        self.add_state(\"loss\", default=torch.tensor(0.0))\n        self.add_state(\"num_elements\", default=torch.tensor(0.0))\n    def update(self, loss: torch.Tensor) -> None:\n        self.num_elements += loss.shape[0]\n        self.loss += loss.sum(dim=0)\n    def compute(self) -> torch.Tensor:\n        return self.loss / self.num_elements",
+        "detail": "src.utils.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "IOUScore",
+        "kind": 6,
+        "importPath": "src.utils.metrics",
+        "description": "src.utils.metrics",
+        "peekOfCode": "class IOUScore(Metric):\n    def __init__(\n        self,\n        num_classes: int,\n        include_background_as_class: bool = False,\n        **kwargs,\n    ):\n        super().__init__(**kwargs)\n        if include_background_as_class:\n            num_classes += 1",
+        "detail": "src.utils.metrics",
+        "documentation": {}
+    },
+    {
+        "label": "make_images_with_masks",
+        "kind": 2,
+        "importPath": "src.utils.visualization",
+        "description": "src.utils.visualization",
+        "peekOfCode": "def make_images_with_masks(\n    image: torch.Tensor,\n    masks: torch.Tensor,\n    num_classes: int,\n    colors: list[str] = None,\n    alpha: float = 0.6,\n) -> plt.Figure:\n    assert (\n        len(image.shape) == 4\n    ), f\"The image should be batched! It has shape {image.shape}, but shape B,C,H,W is expected!\"",
+        "detail": "src.utils.visualization",
+        "documentation": {}
+    },
+    {
+        "label": "Trainer",
+        "kind": 6,
+        "importPath": "src.Trainer",
+        "description": "src.Trainer",
+        "peekOfCode": "class Trainer:\n    def __init__(\n        self,\n        num_epochs: int,\n        loss_fn: nn.Module,\n        validate_every: int = 1,\n        log_every_n_steps: int = 450,\n        device: str = \"cpu\",\n        labels_path: str | Path = \"../configs/label_ids.yaml\",\n    ):",
+        "detail": "src.Trainer",
+        "documentation": {}
+    },
+    {
+        "label": "extract_zipfile",
+        "kind": 2,
+        "importPath": "src.app_utils",
+        "description": "src.app_utils",
+        "peekOfCode": "def extract_zipfile(\n    uploaded_zip: BytesIO, extraction_directory: str | Path\n) -> list[str]:\n    temp_zip_path = os.path.join(\"temp\", uploaded_zip.name)\n    os.makedirs(os.path.dirname(temp_zip_path), exist_ok=True)\n    with open(temp_zip_path, \"wb\") as f:\n        f.write(uploaded_zip.getbuffer())\n    with zipfile.ZipFile(temp_zip_path, \"r\") as zip_ref:\n        # Get list of files before extraction\n        file_list = zip_ref.namelist()",
+        "detail": "src.app_utils",
+        "documentation": {}
+    },
+    {
+        "label": "streamify_string",
+        "kind": 2,
+        "importPath": "src.app_utils",
+        "description": "src.app_utils",
+        "peekOfCode": "def streamify_string(\n    string: str,\n    pause_time: float = 0.02,\n):\n    for s in string:\n        yield s\n        time.sleep(pause_time)",
+        "detail": "src.app_utils",
+        "documentation": {}
+    },
+    {
+        "label": "data_dir",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "data_dir = \"app_data/data/\"\nsave_dir = \"app_data/output/\"\nmodel_dir = \"app_data/model/\"\nconfig_dir = \"configs\"\ndevice = \"cuda:0\" if torch.cuda.is_available() else \"cpu\"\nst.set_page_config(\n    page_title=\"Kidney Segmentation\",  # This sets the browser tab title\n    page_icon=\"💡\",  # This sets the icon (can be an emoji or path to an image)\n)\nst.image(\"app_data/resources/logo.png\")",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "save_dir",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "save_dir = \"app_data/output/\"\nmodel_dir = \"app_data/model/\"\nconfig_dir = \"configs\"\ndevice = \"cuda:0\" if torch.cuda.is_available() else \"cpu\"\nst.set_page_config(\n    page_title=\"Kidney Segmentation\",  # This sets the browser tab title\n    page_icon=\"💡\",  # This sets the icon (can be an emoji or path to an image)\n)\nst.image(\"app_data/resources/logo.png\")\nif \"welcome_streamed\" not in st.session_state:",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "model_dir",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "model_dir = \"app_data/model/\"\nconfig_dir = \"configs\"\ndevice = \"cuda:0\" if torch.cuda.is_available() else \"cpu\"\nst.set_page_config(\n    page_title=\"Kidney Segmentation\",  # This sets the browser tab title\n    page_icon=\"💡\",  # This sets the icon (can be an emoji or path to an image)\n)\nst.image(\"app_data/resources/logo.png\")\nif \"welcome_streamed\" not in st.session_state:\n    st.session_state.welcome_streamed = False",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "config_dir",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "config_dir = \"configs\"\ndevice = \"cuda:0\" if torch.cuda.is_available() else \"cpu\"\nst.set_page_config(\n    page_title=\"Kidney Segmentation\",  # This sets the browser tab title\n    page_icon=\"💡\",  # This sets the icon (can be an emoji or path to an image)\n)\nst.image(\"app_data/resources/logo.png\")\nif \"welcome_streamed\" not in st.session_state:\n    st.session_state.welcome_streamed = False\n    # This variable will store the complete welcome message after streaming",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "device",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "device = \"cuda:0\" if torch.cuda.is_available() else \"cpu\"\nst.set_page_config(\n    page_title=\"Kidney Segmentation\",  # This sets the browser tab title\n    page_icon=\"💡\",  # This sets the icon (can be an emoji or path to an image)\n)\nst.image(\"app_data/resources/logo.png\")\nif \"welcome_streamed\" not in st.session_state:\n    st.session_state.welcome_streamed = False\n    # This variable will store the complete welcome message after streaming\n    st.session_state.welcome_complete = \"\"",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "welcome_container",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "welcome_container = st.empty()\nif not st.session_state.welcome_streamed:\n    welcome_text = \"\"\"\n    ## Welcome! :smile:\n    #### This is a page that allows you to perform detection and segmentation of various types of tissues present in human kidneys.\n    \"\"\"\n    # Use the container to display the streaming text\n    with welcome_container:\n        st.write_stream(\n            streamify_string(welcome_text, pause_time=0.01),",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "uploaded_zip",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "uploaded_zip = st.file_uploader(\n    label=\"\"\"**Upload a `.zip` file containing images you want to segment.\n            (Supported formats: `.tif`, `.png`, `.jpg`, `.jpeg`)**\n    \"\"\",\n    type=\".zip\",\n)\nif uploaded_zip is not None:\n    files_extracted = extract_zipfile(\n        uploaded_zip=uploaded_zip, extraction_directory=data_dir\n    )",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "train_model",
+        "description": "train_model",
+        "peekOfCode": "def main(config_path: str | Path):\n    logger.info(\"Loading configs...\")\n    with open(config_path, \"r\") as config_file:\n        configs = yaml.safe_load(config_file)\n    logger.info(\n        \"Starting experiment with configs: \"\n        + \"\\n\".join([f\"{cfg}:{cfg_val}\" for cfg, cfg_val in configs.items()])\n    )\n    mlflow.set_tracking_uri(uri=configs[\"mlflow_tracking_uri\"])\n    mlflow.set_experiment(configs[\"experiment\"])",
+        "detail": "train_model",
+        "documentation": {}
+    },
+    {
+        "label": "parser",
+        "kind": 5,
+        "importPath": "train_model",
+        "description": "train_model",
+        "peekOfCode": "parser = ArgumentParser()\nparser.add_argument(\"--config_path\", type=str, default=\"configs/train_configs.yaml\")\nif __name__ == \"__main__\":\n    args = parser.parse_args()\n    main(config_path=args.config_path)",
+        "detail": "train_model",
+        "documentation": {}
+    }
+]
