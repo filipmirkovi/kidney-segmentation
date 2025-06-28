@@ -99,6 +99,7 @@ def main(config_path: str | Path):
     )
 
     loss = torch.nn.CrossEntropyLoss(
+        reduction="none",
         weight=torch.tensor(class_weights).to(configs["device"]),
     )
 
