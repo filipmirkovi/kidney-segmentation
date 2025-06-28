@@ -87,7 +87,7 @@ def main(config_path: str | Path):
     )
 
     model = model.to(configs["device"])
-
+    print(model(train_set[0][0]).shape)
     optimizer = torch.optim.Adam(
         model.parameters(),
         lr=float(configs["lr"]),
