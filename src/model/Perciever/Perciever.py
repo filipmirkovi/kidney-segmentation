@@ -46,7 +46,7 @@ class Perciever(nn.Module):
 class StabileSoftmax(nn.Module):
     def __init__(self, dim: int = -3):
         super().__init__()
-        self.softmax = nn.Softmax2d(dim=dim)
+        self.softmax = nn.Softmax(dim=dim)
 
     def forward(self, x):
         x - torch.max(x, keepdim=True, dim=-3).values
