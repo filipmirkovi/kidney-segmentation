@@ -1,74 +1,49 @@
 import numpy as np
 import torch
 import torch.nn as nn
+import einops
 
 
-def get_2d_sincos_pos_encoding(
-    height, width, embed_dim, temperature=10000.0, dtype=torch.float32
-):
-    """
-    Create 2D sinusoidal positional embeddings for transformers.
+def get_sinusoid_encoding(num_tokens: int, token_channels: int) -> torch.Tensor:
+    """Make Sinusoid Encoding Table
 
     Args:
-        height (int): Height of the 2D grid
-        width (int): Width of the 2D grid
-        embed_dim (int): Embedding dimension (must be divisible by 4)
-        temperature (float): Temperature parameter for the encoding
-        dtype (torch.dtype): Data type of the output tensor
+        num_tokens (int): number of tokens
+        token_channels (int): num of dimensions of a token
 
     Returns:
-        torch.Tensor: Position encodings of shape (height*width, embed_dim)
-    """
-    if embed_dim % 4 != 0:
-        raise ValueError(f"Embedding dimension {embed_dim} must be divisible by 4")
-
-    # Create position coordinates
-    y_pos = torch.arange(height, dtype=dtype).reshape(-1, 1)
-    x_pos = torch.arange(width, dtype=dtype).reshape(1, -1)
-
-    # Compute the dimension indices for the encodings
-    # Half the dimensions for height, half for width
-    half_dim = embed_dim // 2
-    dim_t = torch.arange(0, half_dim, 2, dtype=dtype)
-
-    # Apply the temperature scaling
-    dim_t = temperature ** (2 * dim_t / half_dim)
-
-    # Create position encodings for height and width dimensions separately
-    pos_y = y_pos / dim_t.reshape(1, -1)
-    pos_x = x_pos / dim_t.reshape(1, -1)
-
-    # Apply sine and cosine
-    pos_y = torch.stack((pos_y.sin(), pos_y.cos()), dim=2).flatten(2)
-    pos_x = torch.stack((pos_x.sin(), pos_x.cos()), dim=2).flatten(2)
-
-    # Combine height and width encodings
-    pos = torch.cat(
-        (
-            pos_y.repeat(1, width, 1).reshape(height * width, half_dim),
-            pos_x.repeat(height, 1, 1).reshape(height * width, half_dim),
-        ),
-        dim=1,
-    )
-
-    return pos
-
-
-class PositionalEncoding2D(nn.Module):
-    """
-    2D Positional Encoding module for Vision Transformers and similar architectures.
+        (torch.FloatTensor) sinusoidal position encoding table
     """
 
-    def __init__(self, height, width, embed_dim, dropout=0.1, temperature=10000.0):
+    def get_position_angle_vec(i):
+        return [
+            i / np.power(10000, 2 * (j // 2) / token_channels)
+            for j in range(token_channels)
+        ]
+
+    sinusoid_table = np.array([get_position_angle_vec(i) for i in range(num_tokens)])
+    sinusoid_table[:, 0::2] = np.sin(sinusoid_table[:, 0::2])
+    sinusoid_table[:, 1::2] = np.cos(sinusoid_table[:, 1::2])
+
+    # Output shape: (1, token position, token dimension)
+    return torch.FloatTensor(sinusoid_table).unsqueeze(0)
+
+
+class PositionalEncoding(nn.Module):
+    """
+    Positional Encoding module for Vision Transformers and similar architectures.
+    """
+
+    def __init__(self, height: int, width: int, embed_dim: int):
         """
-        Initialize the 2D positional encoding.
+        Initialize the positional encoding.
 
         Args:
             height (int): Height of the input grid
             width (int): Width of the input grid
             embed_dim (int): Embedding dimension (must be divisible by 4)
             dropout (float): Dropout probability
-            temperature (float): Temperature parameter for the encoding
+            inv_freq (float): inv_freq parameter for the encoding
         """
         super().__init__()
         self.height = height
@@ -76,12 +51,10 @@ class PositionalEncoding2D(nn.Module):
         self.embed_dim = embed_dim
 
         # Create fixed positional encodings
-        pos_embed = get_2d_sincos_pos_encoding(
-            height=height, width=width, embed_dim=embed_dim, temperature=temperature
+        pos_embed = get_sinusoid_encoding(
+            num_tokens=self.height * self.width, token_channels=embed_dim
         )
         self.register_buffer("pos_embed", pos_embed)
-
-        self.dropout = nn.Dropout(p=dropout)
 
     def forward(self, x):
         """
@@ -95,61 +68,15 @@ class PositionalEncoding2D(nn.Module):
         """
         # Add positional encoding
         x = x + self.pos_embed
-        return self.dropout(x)
+        return x
 
 
-class ViTPositionalEncoding(nn.Module):
-    """
-    Learnable positional encoding for Vision Transformers.
-    This implementation follows the original ViT approach with learnable parameters.
-    """
-
-    def __init__(self, height, width, embed_dim, dropout=0.1):
-        """
-        Initialize the learnable positional encoding.
-
-        Args:
-            height (int): Height of the input grid
-            width (int): Width of the input grid
-            embed_dim (int): Embedding dimension
-            dropout (float): Dropout probability
-        """
-        super().__init__()
-        self.height = height
-        self.width = width
-
-        # Create learnable positional embeddings
-        # Add 1 for the [CLS] token if needed
-        self.pos_embed = nn.Parameter(torch.zeros(1, height * width + 1, embed_dim))
-
-        # Initialize using truncated normal distribution
-        nn.init.trunc_normal_(self.pos_embed, std=0.02)
-
-        self.dropout = nn.Dropout(p=dropout)
-
-    def forward(self, x):
-        """
-        Add positional encoding to the input.
-
-        Args:
-            x (torch.Tensor): Input tensor of shape (batch_size, sequence_length, embed_dim)
-                              where sequence_length = height*width + 1 (for [CLS] token)
-
-        Returns:
-            torch.Tensor: Output with positional encoding added
-        """
-        # Add positional encoding
-        x = x + self.pos_embed
-        return self.dropout(x)
-
-
-# Example usage with a patch embedding from an image
-class PatchEmbedding(nn.Module):
+class Encoder(nn.Module):
     """
     Convert an image into patches and embed them.
     """
 
-    def __init__(self, img_size=224, patch_size=16, in_channels=3, embed_dim=768):
+    def __init__(self, img_size=224, patch_size=16, in_channels=3, hidden_size=768):
         super().__init__()
         self.img_size = img_size
         self.patch_size = patch_size
@@ -157,7 +84,10 @@ class PatchEmbedding(nn.Module):
         self.num_patches = self.grid_size**2
 
         self.projection = nn.Conv2d(
-            in_channels, embed_dim, kernel_size=patch_size, stride=patch_size
+            in_channels, hidden_size, kernel_size=patch_size, stride=patch_size
+        )
+        self.positional_encoding = PositionalEncoding(
+            height=self.grid_size, width=self.grid_size, hidden_size=hidden_size
         )
 
     def forward(self, x):
@@ -175,7 +105,14 @@ class PatchEmbedding(nn.Module):
 
         # Extract patches using convolution and flatten
         x = self.projection(x)  # (B, embed_dim, grid_size, grid_size)
-        x = x.flatten(2)  # (B, embed_dim, grid_size*grid_size)
-        x = x.transpose(1, 2)  # (B, grid_size*grid_size, embed_dim)
-
+        x = einops.rearrange(
+            x, "b c h w -> b (h w) c"
+        )  # (B, grid_size*grid_size, embed_dim,)
+        x = self.positional_encoding(x)
         return x
+
+
+if __name__ == "__main__":
+    embd = Encoder()
+    x = torch.randn(1, 3, 224, 224)
+    print(embd(x).shape)

@@ -15,7 +15,7 @@ class ProjectionFCNN(nn.Module):
 
         layers = []
         if norm:
-            layers.append(nn.LayerNorm(in_features=in_features))
+            layers.append(nn.LayerNorm(in_features))
 
         layers.append(nn.Linear(in_features, out_features))
         layers.append(activation)

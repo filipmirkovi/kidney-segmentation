@@ -51,6 +51,10 @@ class SegmentationDataset(Dataset):
         self.id_to_label = {v: k for k, v in self.label_to_id.items()}
         self.set_up()
 
+    @property
+    def image_size(self):
+        return self[0][0].shape[-1]
+
     def set_up(self) -> None:
         labels = self.load_labels(self.labels_path)
         if labels is None:
@@ -104,7 +108,6 @@ class SegmentationDataset(Dataset):
         return torch.tensor(label_masks)
 
     def __getitem__(self, index) -> tuple[torch.Tensor | None]:
-        index = index % 20
         data_item: SegDataItem = self.data[index]
         input_image = Image.open(data_item.image_path)
         label_masks = self.get_target_mask(input_image.size, data_item.annotations)

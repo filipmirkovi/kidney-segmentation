@@ -13,6 +13,7 @@ from src.model.utils import num_params
 
 from src.dataset.SegmentationDataset import SegmentationDataset
 from src.Trainer import Trainer
+from src.model.Perciever.Perciever import Perciever
 
 
 # Configure loguru at the start of the script
@@ -64,12 +65,20 @@ def main(config_path: str | Path):
 
     logger.info("Initializing model...")
 
-    model = UNet(
+    model = Perciever(
+        img_size=train_set.image_size,
+        patch_size=32,
         in_channels=3,
-        num_classes=configs["num_segmentation_regions"] + 1,
-        apply_softmax=False,
-        hidden_channels=[16, 32, 64],
+        hidden_size=128,
+        num_perceptions=256,
+        attenton_hidden_size=64,
     )
+    # UNet(
+    #    in_channels=3,
+    #    num_classes=configs["num_segmentation_regions"] + 1,
+    #    apply_softmax=False,
+    #    hidden_channels=[16, 32, 64],
+    # )
 
     logger.success(
         "Model built {}!\nSending model to device {}\nThe model has {} parameters.".format(

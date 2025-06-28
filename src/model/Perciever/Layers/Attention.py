@@ -3,7 +3,6 @@ import torch
 import torch.nn.functional as F
 import einops
 from src.model.Perciever.Layers.FCNN import ProjectionFCNN
-from src.model.Perciever.Layers.Attention import MultiHeadSelfAttention
 
 
 class SelfAttentionLayer(nn.Module):
@@ -31,7 +30,7 @@ class SelfAttentionLayer(nn.Module):
         return values
 
 
-class CrossAttention(nn.Module):
+class CrossAttentionLayer(nn.Module):
     def __init__(
         self,
         query_sequence_size: int,
@@ -59,7 +58,7 @@ class CrossAttention(nn.Module):
         value = self.value_projection(key_value_sequence)
         attn_score = einops.einsum(key, query, "b l c, b L c -> b l L")
         attn_score = F.softmax(attn_score, dim=-1)
-        value = einops.einsum(attn_score, value, "b l L, b L c -> b l c")
+        value = einops.einsum(attn_score, value, "b L l, b L c -> b l c")
         if self.skip_connection:
             value += query_sequence
         return value
@@ -92,7 +91,9 @@ class MultiHeadSelfAttention(nn.Module):
 
     def forward(self, input_sequentce: torch.Tensor) -> torch.Tensor:
         head_outputs = []
-        input_chunks = torch.split(input_sequentce, dim=-1)
+        input_chunks = torch.split(
+            input_sequentce, split_size_or_sections=self.head_input_size, dim=-1
+        )
         for attn_head, chunk in zip(self.attention_heads, input_chunks):
             head_outputs.append(attn_head(chunk))
         return torch.cat(head_outputs, dim=-1)
@@ -116,14 +117,14 @@ class MultiHeadCrossAttention(nn.Module):
             key_value_sequence_size % num_heads == 0
         ), f"Key and Value Input size of {query_sequence_size} is not divisible among {num_heads} heads!"
 
-        self.query_head_input_size = query_sequence_size // num_heads
-        self.key_value_head_input_size = key_value_sequence_size // num_heads
+        self.head_input_size = hidden_size // num_heads
+
         self.attention_heads = nn.ModuleList(
             [
-                CrossAttention(
-                    query_sequence_size=self.query_head_input_size,
-                    key_value_sequence_size=self.key_value_head_input_size,
-                    hidden_size=hidden_size,
+                CrossAttentionLayer(
+                    query_sequence_size=query_sequence_size,
+                    key_value_sequence_size=key_value_sequence_size,
+                    hidden_size=self.head_input_size,
                     skip_connection=skip_connection,
                 )
             ]
@@ -132,8 +133,14 @@ class MultiHeadCrossAttention(nn.Module):
     def forward(
         self, query_sequence: torch.Tensor, key_value_sequence: torch.Tensor
     ) -> torch.Tensor:
-        query_chunks = torch.split(query_sequence, dim=-1)
-        key_value_chunks = torch.split(key_value_sequence, dim=-1)
+        query_chunks = torch.split(
+            query_sequence, split_size_or_sections=self.head_input_size, dim=-1
+        )
+        key_value_chunks = torch.split(
+            key_value_sequence,
+            split_size_or_sections=self.head_input_size,
+            dim=-1,
+        )
         output_chunks = []
         for head, query, key_value in zip(
             self.attention_heads, query_chunks, key_value_chunks

@@ -1,5 +1,12 @@
 from typing import Literal
+from pydantic import BaseModel
 import torch.nn as nn
+
+
+class ImageInfo(BaseModel):
+    height: int
+    width: int
+    channels: int
 
 
 def num_params(
