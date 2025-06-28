@@ -80,7 +80,7 @@ class Encoder(nn.Module):
         super().__init__()
         self.img_size = img_size
         self.patch_size = patch_size
-        self.grid_size = img_size // (patch_size // 2)
+        self.grid_size = img_size // (patch_size / 2)
         self.num_patches = self.grid_size**2
 
         self.projection = nn.Conv2d(

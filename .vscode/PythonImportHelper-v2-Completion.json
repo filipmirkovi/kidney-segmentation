@@ -256,7 +256,39 @@
         "documentation": {}
     },
     {
-        "label": "MultiHeadSelfAttention",
+        "label": "Rearrange",
+        "importPath": "einops.layers.torch",
+        "description": "einops.layers.torch",
+        "isExtraImport": true,
+        "detail": "einops.layers.torch",
+        "documentation": {}
+    },
+    {
+        "label": "Decoder",
+        "importPath": "src.model.Perciever.Decoder",
+        "description": "src.model.Perciever.Decoder",
+        "isExtraImport": true,
+        "detail": "src.model.Perciever.Decoder",
+        "documentation": {}
+    },
+    {
+        "label": "Encoder",
+        "importPath": "src.model.Perciever.Encoder",
+        "description": "src.model.Perciever.Encoder",
+        "isExtraImport": true,
+        "detail": "src.model.Perciever.Encoder",
+        "documentation": {}
+    },
+    {
+        "label": "PercieverProcessor",
+        "importPath": "src.model.Perciever.PercieverProcessor",
+        "description": "src.model.Perciever.PercieverProcessor",
+        "isExtraImport": true,
+        "detail": "src.model.Perciever.PercieverProcessor",
+        "documentation": {}
+    },
+    {
+        "label": "CrossAttentionLayer",
         "importPath": "src.model.Perciever.Layers.Attention",
         "description": "src.model.Perciever.Layers.Attention",
         "isExtraImport": true,
@@ -264,7 +296,7 @@
         "documentation": {}
     },
     {
-        "label": "MultiHeadCrossAttention",
+        "label": "SelfAttentionLayer",
         "importPath": "src.model.Perciever.Layers.Attention",
         "description": "src.model.Perciever.Layers.Attention",
         "isExtraImport": true,
@@ -272,11 +304,11 @@
         "documentation": {}
     },
     {
-        "label": "MultiHeadSelfAttention",
-        "importPath": "src.model.Perciever.Layers.Attention",
-        "description": "src.model.Perciever.Layers.Attention",
+        "label": "BaseModel",
+        "importPath": "pydantic",
+        "description": "pydantic",
         "isExtraImport": true,
-        "detail": "src.model.Perciever.Layers.Attention",
+        "detail": "pydantic",
         "documentation": {}
     },
     {
@@ -518,6 +550,14 @@
         "documentation": {}
     },
     {
+        "label": "Perciever",
+        "importPath": "src.model.Perciever.Perciever",
+        "description": "src.model.Perciever.Perciever",
+        "isExtraImport": true,
+        "detail": "src.model.Perciever.Perciever",
+        "documentation": {}
+    },
+    {
         "label": "SegDataItem",
         "kind": 6,
         "importPath": "src.dataset.SegmentationDataset",
@@ -554,11 +594,11 @@
         "documentation": {}
     },
     {
-        "label": "CrossAttention",
+        "label": "CrossAttentionLayer",
         "kind": 6,
         "importPath": "src.model.Perciever.Layers.Attention",
         "description": "src.model.Perciever.Layers.Attention",
-        "peekOfCode": "class CrossAttention(nn.Module):\n    def __init__(\n        self,\n        query_sequence_size: int,\n        key_value_sequence_size: int,\n        hidden_size: int,\n        skip_connection: bool = True,\n    ):\n        super().__init__()\n        self.key_projection = ProjectionFCNN(",
+        "peekOfCode": "class CrossAttentionLayer(nn.Module):\n    def __init__(\n        self,\n        query_sequence_size: int,\n        key_value_sequence_size: int,\n        hidden_size: int,\n        skip_connection: bool = True,\n    ):\n        super().__init__()\n        self.key_projection = ProjectionFCNN(",
         "detail": "src.model.Perciever.Layers.Attention",
         "documentation": {}
     },
@@ -590,39 +630,57 @@
         "documentation": {}
     },
     {
-        "label": "PositionalEncoding2D",
+        "label": "Decoder",
+        "kind": 6,
+        "importPath": "src.model.Perciever.Decoder",
+        "description": "src.model.Perciever.Decoder",
+        "peekOfCode": "class Decoder(nn.Module):\n    def __init__(\n        self,\n        img_size: int,\n        patch_size: int,\n        in_channels: int,\n        out_channels: int,\n    ):\n        super().__init__()\n        self.in_channels = in_channels",
+        "detail": "src.model.Perciever.Decoder",
+        "documentation": {}
+    },
+    {
+        "label": "PositionalEncoding",
         "kind": 6,
         "importPath": "src.model.Perciever.Encoder",
         "description": "src.model.Perciever.Encoder",
-        "peekOfCode": "class PositionalEncoding2D(nn.Module):\n    \"\"\"\n    2D Positional Encoding module for Vision Transformers and similar architectures.\n    \"\"\"\n    def __init__(self, height, width, embed_dim, dropout=0.1, temperature=10000.0):\n        \"\"\"\n        Initialize the 2D positional encoding.\n        Args:\n            height (int): Height of the input grid\n            width (int): Width of the input grid",
+        "peekOfCode": "class PositionalEncoding(nn.Module):\n    \"\"\"\n    Positional Encoding module for Vision Transformers and similar architectures.\n    \"\"\"\n    def __init__(self, height: int, width: int, embed_dim: int):\n        \"\"\"\n        Initialize the positional encoding.\n        Args:\n            height (int): Height of the input grid\n            width (int): Width of the input grid",
         "detail": "src.model.Perciever.Encoder",
         "documentation": {}
     },
     {
-        "label": "ViTPositionalEncoding",
+        "label": "Encoder",
         "kind": 6,
         "importPath": "src.model.Perciever.Encoder",
         "description": "src.model.Perciever.Encoder",
-        "peekOfCode": "class ViTPositionalEncoding(nn.Module):\n    \"\"\"\n    Learnable positional encoding for Vision Transformers.\n    This implementation follows the original ViT approach with learnable parameters.\n    \"\"\"\n    def __init__(self, height, width, embed_dim, dropout=0.1):\n        \"\"\"\n        Initialize the learnable positional encoding.\n        Args:\n            height (int): Height of the input grid",
+        "peekOfCode": "class Encoder(nn.Module):\n    \"\"\"\n    Convert an image into patches and embed them.\n    \"\"\"\n    def __init__(self, img_size=224, patch_size=16, in_channels=3, hidden_size=768):\n        super().__init__()\n        self.img_size = img_size\n        self.patch_size = patch_size\n        self.grid_size = img_size // (patch_size / 2)\n        self.num_patches = self.grid_size**2",
         "detail": "src.model.Perciever.Encoder",
         "documentation": {}
     },
     {
-        "label": "PatchEmbedding",
-        "kind": 6,
-        "importPath": "src.model.Perciever.Encoder",
-        "description": "src.model.Perciever.Encoder",
-        "peekOfCode": "class PatchEmbedding(nn.Module):\n    \"\"\"\n    Convert an image into patches and embed them.\n    \"\"\"\n    def __init__(self, img_size=224, patch_size=16, in_channels=3, embed_dim=768):\n        super().__init__()\n        self.img_size = img_size\n        self.patch_size = patch_size\n        self.grid_size = img_size // patch_size\n        self.num_patches = self.grid_size**2",
-        "detail": "src.model.Perciever.Encoder",
-        "documentation": {}
-    },
-    {
-        "label": "get_2d_sincos_pos_encoding",
+        "label": "get_sinusoid_encoding",
         "kind": 2,
         "importPath": "src.model.Perciever.Encoder",
         "description": "src.model.Perciever.Encoder",
-        "peekOfCode": "def get_2d_sincos_pos_encoding(\n    height, width, embed_dim, temperature=10000.0, dtype=torch.float32\n):\n    \"\"\"\n    Create 2D sinusoidal positional embeddings for transformers.\n    Args:\n        height (int): Height of the 2D grid\n        width (int): Width of the 2D grid\n        embed_dim (int): Embedding dimension (must be divisible by 4)\n        temperature (float): Temperature parameter for the encoding",
+        "peekOfCode": "def get_sinusoid_encoding(num_tokens: int, token_channels: int) -> torch.Tensor:\n    \"\"\"Make Sinusoid Encoding Table\n    Args:\n        num_tokens (int): number of tokens\n        token_channels (int): num of dimensions of a token\n    Returns:\n        (torch.FloatTensor) sinusoidal position encoding table\n    \"\"\"\n    def get_position_angle_vec(i):\n        return [",
         "detail": "src.model.Perciever.Encoder",
+        "documentation": {}
+    },
+    {
+        "label": "Perciever",
+        "kind": 6,
+        "importPath": "src.model.Perciever.Perciever",
+        "description": "src.model.Perciever.Perciever",
+        "peekOfCode": "class Perciever(nn.Module):\n    def __init__(\n        self,\n        img_size: int,\n        patch_size: int,\n        in_channels: int,\n        out_channels: int,\n        hidden_size: int,\n        num_perceptions: int,\n        attenton_hidden_size: int,",
+        "detail": "src.model.Perciever.Perciever",
+        "documentation": {}
+    },
+    {
+        "label": "StabileSoftmax",
+        "kind": 6,
+        "importPath": "src.model.Perciever.Perciever",
+        "description": "src.model.Perciever.Perciever",
+        "peekOfCode": "class StabileSoftmax(nn.Module):\n    def __init__(self, dim: int = -3):\n        super().__init__()\n        self.softmax = nn.Softmax(dim=dim)\n    def forward(self, x):\n        x - torch.max(x, keepdim=True, dim=-3).values\n        return self.softmax(x)",
+        "detail": "src.model.Perciever.Perciever",
         "documentation": {}
     },
     {
@@ -630,7 +688,7 @@
         "kind": 6,
         "importPath": "src.model.Perciever.PercieverProcessor",
         "description": "src.model.Perciever.PercieverProcessor",
-        "peekOfCode": "class PercieverProcessor(nn.Module):\n    def __init__(\n        self,\n        latent_size: int = 128,\n        input_size: int = 64,\n        num_perceptions: int = 128,\n        num_attn_heads: int = 8,\n        attention_hidden_size: int = 32,\n    ):\n        super().__init__()",
+        "peekOfCode": "class PercieverProcessor(nn.Module):\n    def __init__(\n        self,\n        latent_size: int = 128,\n        input_size: int = 64,\n        num_perceptions: int = 256,\n        attention_hidden_size: int = 32,\n        num_steps: int = 8,\n    ):\n        super().__init__()",
         "detail": "src.model.Perciever.PercieverProcessor",
         "documentation": {}
     },
@@ -686,6 +744,15 @@
         "description": "src.model.loss",
         "peekOfCode": "class SoftDiceLoss(nn.Module):\n    \"\"\"\n    Soft Dice Loss implementation for multi-class segmentation with background class.\n    This implementation:\n    - Handles multiple foreground classes plus a background class\n    - Accepts segmentation masks with class indices as targets\n    - Applies softmax to convert logits to probabilities\n    - Uses a smooth factor to avoid division by zero\n    - Optionally applies class weights to handle class imbalance\n    Optimized for segmentation tasks where targets are masks with class indices.",
         "detail": "src.model.loss",
+        "documentation": {}
+    },
+    {
+        "label": "ImageInfo",
+        "kind": 6,
+        "importPath": "src.model.utils",
+        "description": "src.model.utils",
+        "peekOfCode": "class ImageInfo(BaseModel):\n    height: int\n    width: int\n    channels: int\ndef num_params(\n    model: nn.Module,\n    units: Literal[\"million\", \"billion\", \"thousand\", \"none\"] = \"million\",\n) -> str:\n    num_params = sum([param.numel() for param in model.parameters()])\n    match units:",
+        "detail": "src.model.utils",
         "documentation": {}
     },
     {
