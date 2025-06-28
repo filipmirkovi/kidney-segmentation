@@ -6,7 +6,7 @@ save_dir: "./app_data/model/"
 mlflow_tracking_uri: "http://10.100.111.210:44555"  # "http://127.0.0.1:44555"
 
 batch_size: 16
-lr: 1e-3
+lr: 5e-4
 weight_decay: 1e-3
 num_epochs: 200
 device: "cuda:0"
