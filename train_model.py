@@ -73,13 +73,13 @@ def main(config_path: str | Path):
         hidden_size=256,
         num_perceptions=1024,
         attenton_hidden_size=128,
-    )
-    # UNet(
-    #    in_channels=3,
-    #    num_classes=configs["num_segmentation_regions"] + 1,
-    #    apply_softmax=False,
-    #    hidden_channels=[16, 32, 64],
-    # )
+
+    model= UNet(
+       in_channels=3,
+       num_classes=configs["num_segmentation_regions"] + 1,
+       apply_softmax=False,
+       hidden_channels=[16, 32, 64],
+     )
 
     logger.success(
         "Model built {}!\nSending model to device {}\nThe model has {} parameters.".format(
