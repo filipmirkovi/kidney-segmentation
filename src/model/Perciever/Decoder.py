@@ -23,25 +23,25 @@ class Decoder(nn.Module):
             nn.SiLU(),
             nn.Linear(in_channels, self.patch_size * self.patch_size * out_channels),
         )
-        self.rearrange = Rearrange(
-            "b (nh nw) (pw ph c) -> b c (nh ph) (nw pw)",
-            ph=self.patch_size,
-            pw=self.patch_size,
-            c=self.out_channels,
-            nh=self.img_size // self.patch_size,
-            nw=self.img_size // self.patch_size,
+        self.rearrange = Rearrange("b n (pw ph c) -> b (pw ph c) n")
+        self.fold = nn.Fold(
+            output_size=(img_size, img_size),
+            kernel_size=patch_size,
+            stride=self.patch_size // 2,
         )
-        self.smooth = nn.Conv2d(
-            in_channels=out_channels,
-            out_channels=out_channels,
-            kernel_size=3,
-            stride=1,
-            padding="same",
-        )
+
+        # self.rearrange = Rearrange(
+        #    "b (nh nw) (pw ph c) -> b c (nh ph) (nw pw)",
+        #    ph=self.patch_size,
+        #    pw=self.patch_size,
+        #    c=self.out_channels,
+        #    nh=self.img_size // self.patch_size,
+        #    nw=self.img_size // self.patch_size,
+        # )
 
     def forward(self, embedding: torch.Tensor) -> torch.Tensor:
         out = self.projection(embedding)
-        return self.smooth(self.rearrange(out))
+        return self.fold(self.rearrange(out))
 
 
 if __name__ == "__main__":
