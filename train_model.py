@@ -69,6 +69,7 @@ def main(config_path: str | Path):
         img_size=512,
         patch_size=32,
         in_channels=3,
+        out_channels=4,
         hidden_size=128,
         num_perceptions=256,
         attenton_hidden_size=64,

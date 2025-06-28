@@ -11,6 +11,7 @@ class Perciever(nn.Module):
         img_size: int,
         patch_size: int,
         in_channels: int,
+        out_channels: int,
         hidden_size: int,
         num_perceptions: int,
         attenton_hidden_size: int,
@@ -31,7 +32,7 @@ class Perciever(nn.Module):
         self.decoder = Decoder(
             img_size=img_size,
             patch_size=patch_size,
-            out_channels=in_channels,
+            out_channels=out_channels,
             in_channels=hidden_size,
         )
         self.softmax = StabileSoftmax()
