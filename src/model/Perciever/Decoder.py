@@ -23,7 +23,7 @@ class Decoder(nn.Module):
             nn.SiLU(),
             nn.Linear(in_channels, self.patch_size * self.patch_size * out_channels),
         )
-        self.rearrange = Rearrange("b n (pw ph c) -> b (pw ph c) n")
+        self.rearrange = Rearrange("b n CL -> b CL n")
         self.fold = nn.Fold(
             output_size=(img_size, img_size),
             kernel_size=patch_size,
