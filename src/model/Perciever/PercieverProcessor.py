@@ -30,7 +30,7 @@ class PercieverProcessor(nn.Module):
         self.cross_projectios = nn.ModuleList()
         self.projectios = nn.ModuleList()
 
-        for step in num_steps:
+        for step in range(num_steps):
             self.cross_attn.append(
                 CrossAttentionLayer(
                     query_sequence_size=self.latent_size,
