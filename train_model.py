@@ -66,7 +66,7 @@ def main(config_path: str | Path):
     logger.info("Initializing model...")
 
     model = Perciever(
-        img_size=train_set.image_size,
+        img_size=512,
         patch_size=32,
         in_channels=3,
         hidden_size=128,
