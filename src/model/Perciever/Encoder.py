@@ -87,7 +87,7 @@ class Encoder(nn.Module):
             in_channels, hidden_size, kernel_size=patch_size, stride=patch_size
         )
         self.positional_encoding = PositionalEncoding(
-            height=self.grid_size, width=self.grid_size, hidden_size=hidden_size
+            height=self.grid_size, width=self.grid_size, embed_dim=hidden_size
         )
 
     def forward(self, x):
