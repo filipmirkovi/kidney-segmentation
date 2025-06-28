@@ -31,10 +31,17 @@ class Decoder(nn.Module):
             nh=self.img_size // self.patch_size,
             nw=self.img_size // self.patch_size,
         )
+        self.smooth = nn.Conv2d(
+            in_channels=out_channels,
+            out_channels=out_channels,
+            kernel_size=3,
+            stride=1,
+            padding="same",
+        )
 
     def forward(self, embedding: torch.Tensor) -> torch.Tensor:
         out = self.projection(embedding)
-        return self.rearrange(out)
+        return self.smooth(self.rearrange(out))
 
 
 if __name__ == "__main__":
