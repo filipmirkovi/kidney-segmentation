@@ -88,7 +88,7 @@ class Encoder(nn.Module):
             hidden_size,
             kernel_size=patch_size,
             stride=patch_size // 2,
-            padding="same",
+            padding=(patch_size - 1) // 2,
         )
         self.positional_encoding = PositionalEncoding(
             height=self.grid_size, width=self.grid_size, embed_dim=hidden_size
