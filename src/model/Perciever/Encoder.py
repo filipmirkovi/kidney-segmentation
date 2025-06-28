@@ -84,7 +84,11 @@ class Encoder(nn.Module):
         self.num_patches = self.grid_size**2
 
         self.projection = nn.Conv2d(
-            in_channels, hidden_size, kernel_size=patch_size, stride=patch_size // 2
+            in_channels,
+            hidden_size,
+            kernel_size=patch_size,
+            stride=patch_size // 2,
+            padding="same",
         )
         self.positional_encoding = PositionalEncoding(
             height=self.grid_size, width=self.grid_size, embed_dim=hidden_size
