@@ -67,12 +67,12 @@ def main(config_path: str | Path):
 
     model = Perciever(
         img_size=512,
-        patch_size=16,
         in_channels=3,
         out_channels=4,
         hidden_size=256,
         num_perceptions=1024,
         attenton_hidden_size=128,
+        num_scaling_layers=2,
     )
 
     # model = UNet(

@@ -2,6 +2,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import einops
+from src.model.Perciever.Layers.ConvLike import DownLayer
 
 
 def get_sinusoid_encoding(num_tokens: int, token_channels: int) -> torch.Tensor:
@@ -76,25 +77,42 @@ class Encoder(nn.Module):
     Convert an image into patches and embed them.
     """
 
-    def __init__(self, img_size=224, patch_size=16, in_channels=3, hidden_size=768):
+    def __init__(
+        self,
+        img_size=224,
+        in_channels: int = 3,
+        num_scaling_layers: int = 3,
+        hidden_size=128,
+    ):
         super().__init__()
         self.img_size = img_size
-        self.patch_size = patch_size
-        self.grid_size = img_size // (patch_size / 2)
+        self.num_scaling_layers = num_scaling_layers
+        self.grid_size = img_size // 2**num_scaling_layers
         self.num_patches = self.grid_size**2
-
-        self.projection = nn.Conv2d(
-            in_channels,
-            hidden_size,
-            kernel_size=patch_size,
-            stride=patch_size // 2,
-            padding=(patch_size - 1) // 2,
+        hidden_sizes = (
+            [in_channels]
+            + [
+                int(hidden_size // 2 ** (num_scaling_layers - i))
+                for i in range(num_scaling_layers - 1)
+            ]
+            + [hidden_size]
+        )
+        self.layers = nn.Sequential(
+            *[
+                DownLayer(
+                    in_channels=hidden_sizes[i],
+                    out_channels=hidden_sizes[i + 1],
+                    kernel_size=3,
+                    pool=True,
+                )
+                for i in range(len(hidden_sizes) - 1)
+            ]
         )
         self.positional_encoding = PositionalEncoding(
             height=self.grid_size, width=self.grid_size, embed_dim=hidden_size
         )
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor):
         """
         Args:
             x (torch.Tensor): Input images of shape (batch_size, channels, height, width)
@@ -108,15 +126,24 @@ class Encoder(nn.Module):
         ), f"Input image size ({H}*{W}) doesn't match expected size ({self.img_size}*{self.img_size})"
 
         # Extract patches using convolution and flatten
-        x = self.projection(x)  # (B, embed_dim, grid_size, grid_size)
+        x = self.layers(x)  # (B, embed_dim, grid_size, grid_size)
         x = einops.rearrange(
             x, "b c h w -> b (h w) c"
         )  # (B, grid_size*grid_size, embed_dim,)
         x = self.positional_encoding(x)
         return x
 
+    @property
+    def output_size(self) -> tuple[int]:
+        s = self.img_size // 2**self.num_scaling_layers
+        return s, s
+
 
 if __name__ == "__main__":
+    from src.model.utils import num_params
+
     embd = Encoder()
+    print(embd.output_size)
+    print(num_params(embd))
     x = torch.randn(1, 3, 224, 224)
     print(embd(x).shape)

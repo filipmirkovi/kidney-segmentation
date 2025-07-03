@@ -8,6 +8,14 @@
         "documentation": {}
     },
     {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
         "label": "Literal",
         "importPath": "typing",
         "description": "typing",
@@ -261,6 +269,30 @@
         "description": "einops.layers.torch",
         "isExtraImport": true,
         "detail": "einops.layers.torch",
+        "documentation": {}
+    },
+    {
+        "label": "Rearrange",
+        "importPath": "einops.layers.torch",
+        "description": "einops.layers.torch",
+        "isExtraImport": true,
+        "detail": "einops.layers.torch",
+        "documentation": {}
+    },
+    {
+        "label": "UpLayer",
+        "importPath": "src.model.Perciever.Layers.ConvLike",
+        "description": "src.model.Perciever.Layers.ConvLike",
+        "isExtraImport": true,
+        "detail": "src.model.Perciever.Layers.ConvLike",
+        "documentation": {}
+    },
+    {
+        "label": "DownLayer",
+        "importPath": "src.model.Perciever.Layers.ConvLike",
+        "description": "src.model.Perciever.Layers.ConvLike",
+        "isExtraImport": true,
+        "detail": "src.model.Perciever.Layers.ConvLike",
         "documentation": {}
     },
     {
@@ -621,6 +653,42 @@
         "documentation": {}
     },
     {
+        "label": "ResidualConv",
+        "kind": 6,
+        "importPath": "src.model.Perciever.Layers.ConvLike",
+        "description": "src.model.Perciever.Layers.ConvLike",
+        "peekOfCode": "class ResidualConv(nn.Module):\n    def __init__(\n        self, channels: int, kernel_size: int, activation: nn.Module = nn.LeakyReLU()\n    ):\n        super().__init__()\n        self.norm = nn.BatchNorm2d(channels)\n        self.activation = activation\n        self.conv = nn.Conv2d(\n            kernel_size=kernel_size,\n            in_channels=channels,",
+        "detail": "src.model.Perciever.Layers.ConvLike",
+        "documentation": {}
+    },
+    {
+        "label": "UpLayer",
+        "kind": 6,
+        "importPath": "src.model.Perciever.Layers.ConvLike",
+        "description": "src.model.Perciever.Layers.ConvLike",
+        "peekOfCode": "class UpLayer(nn.Module):\n    def __init__(self, in_channels: int, out_channels: int, kernel_size, pool: bool):\n        super().__init__()\n        self.layers = nn.Sequential(\n            ResidualConv(channels=in_channels, kernel_size=kernel_size),\n            ResidualConv(channels=in_channels, kernel_size=kernel_size),\n            nn.BatchNorm2d(in_channels),\n            nn.LeakyReLU(),\n            nn.Conv2d(\n                kernel_size=kernel_size,",
+        "detail": "src.model.Perciever.Layers.ConvLike",
+        "documentation": {}
+    },
+    {
+        "label": "DownLayer",
+        "kind": 6,
+        "importPath": "src.model.Perciever.Layers.ConvLike",
+        "description": "src.model.Perciever.Layers.ConvLike",
+        "peekOfCode": "class DownLayer(nn.Module):\n    def __init__(self, in_channels: int, out_channels: int, kernel_size, pool):\n        super().__init__()\n        self.layers = nn.Sequential(\n            nn.BatchNorm2d(in_channels),\n            nn.SELU(),\n            nn.Conv2d(\n                kernel_size=kernel_size,\n                in_channels=in_channels,\n                out_channels=out_channels,",
+        "detail": "src.model.Perciever.Layers.ConvLike",
+        "documentation": {}
+    },
+    {
+        "label": "StabileSoftmax",
+        "kind": 6,
+        "importPath": "src.model.Perciever.Layers.ConvLike",
+        "description": "src.model.Perciever.Layers.ConvLike",
+        "peekOfCode": "class StabileSoftmax(nn.Module):\n    def __init__(self, dim: int = -3):\n        super().__init__()\n        self.softmax = nn.Softmax2d(dim=dim)\n    def forward(self, x):\n        x - torch.max(x, keepdim=True, dim=-3).values\n        return self.softmax(x)",
+        "detail": "src.model.Perciever.Layers.ConvLike",
+        "documentation": {}
+    },
+    {
         "label": "ProjectionFCNN",
         "kind": 6,
         "importPath": "src.model.Perciever.Layers.FCNN",
@@ -634,7 +702,7 @@
         "kind": 6,
         "importPath": "src.model.Perciever.Decoder",
         "description": "src.model.Perciever.Decoder",
-        "peekOfCode": "class Decoder(nn.Module):\n    def __init__(\n        self,\n        img_size: int,\n        patch_size: int,\n        in_channels: int,\n        out_channels: int,\n    ):\n        super().__init__()\n        self.in_channels = in_channels",
+        "peekOfCode": "class Decoder(nn.Module):\n    def __init__(\n        self,\n        img_size=224,\n        input_dims: Optional[int] = None,\n        in_channels: int = 128,\n        out_channels: int = 3,\n        num_scaling_layers: int = 3,\n    ):\n        super().__init__()",
         "detail": "src.model.Perciever.Decoder",
         "documentation": {}
     },
@@ -652,7 +720,7 @@
         "kind": 6,
         "importPath": "src.model.Perciever.Encoder",
         "description": "src.model.Perciever.Encoder",
-        "peekOfCode": "class Encoder(nn.Module):\n    \"\"\"\n    Convert an image into patches and embed them.\n    \"\"\"\n    def __init__(self, img_size=224, patch_size=16, in_channels=3, hidden_size=768):\n        super().__init__()\n        self.img_size = img_size\n        self.patch_size = patch_size\n        self.grid_size = img_size // (patch_size / 2)\n        self.num_patches = self.grid_size**2",
+        "peekOfCode": "class Encoder(nn.Module):\n    \"\"\"\n    Convert an image into patches and embed them.\n    \"\"\"\n    def __init__(\n        self,\n        img_size=224,\n        in_channels: int = 3,\n        num_scaling_layers: int = 3,\n        hidden_size=128,",
         "detail": "src.model.Perciever.Encoder",
         "documentation": {}
     },
@@ -670,7 +738,7 @@
         "kind": 6,
         "importPath": "src.model.Perciever.Perciever",
         "description": "src.model.Perciever.Perciever",
-        "peekOfCode": "class Perciever(nn.Module):\n    def __init__(\n        self,\n        img_size: int,\n        patch_size: int,\n        in_channels: int,\n        out_channels: int,\n        hidden_size: int,\n        num_perceptions: int,\n        attenton_hidden_size: int,",
+        "peekOfCode": "class Perciever(nn.Module):\n    def __init__(\n        self,\n        img_size: int,\n        in_channels: int,\n        out_channels: int,\n        hidden_size: int,\n        num_perceptions: int,\n        attenton_hidden_size: int,\n        num_scaling_layers: int = 2,",
         "detail": "src.model.Perciever.Perciever",
         "documentation": {}
     },
@@ -679,7 +747,7 @@
         "kind": 6,
         "importPath": "src.model.Perciever.Perciever",
         "description": "src.model.Perciever.Perciever",
-        "peekOfCode": "class StabileSoftmax(nn.Module):\n    def __init__(self, dim: int = -3):\n        super().__init__()\n        self.softmax = nn.Softmax(dim=dim)\n    def forward(self, x):\n        x - torch.max(x, keepdim=True, dim=-3).values\n        return self.softmax(x)",
+        "peekOfCode": "class StabileSoftmax(nn.Module):\n    def __init__(self, dim: int = -3):\n        super().__init__()\n        self.softmax = nn.Softmax(dim=dim)\n    def forward(self, x):\n        x - torch.max(x, keepdim=True, dim=-3).values\n        return self.softmax(x)\nif __name__ == \"__main__\":\n    from src.model.utils import num_params\n    model = Perciever(",
         "detail": "src.model.Perciever.Perciever",
         "documentation": {}
     },
