@@ -173,10 +173,10 @@ class ImageSplittingDatasetWrapper(Dataset):
         image_batch = self.image_splitter(image[None])
         mask_batch = self.mask_splitter(mask[None])
         mask_area_topk = torch.topk(
-         mask_batch[:, self.mask_idx, ...].sum(dim=(-1, -2, -3))            
+            mask_batch[:, self.mask_idx, ...].sum(dim=(-1, -2, -3)),
             k=self.topk,
         )
-        
+
         return (
             image_batch[mask_area_topk.indices, ...],
             mask_batch[mask_area_topk.indices, ...],
