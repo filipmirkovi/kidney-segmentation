@@ -27,9 +27,8 @@ def make_images_with_masks(
         )
         for i in range(batch_size)
     ]
-    if len(masked_images) < 4:
-        nrow = 2
-    elif len(masked_images) < 9:
+    nrow = 2
+    if len(masked_images) > 2 and len(masked_images) < 9:
         nrow = 3
     elif len(masked_images) < 16:
         nrow = 4
