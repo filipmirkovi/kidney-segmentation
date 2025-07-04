@@ -14,7 +14,7 @@ from loguru import logger
 
 
 from src.utils.metrics import LossMonitor, IOUScore, NumSteps
-from src.utils.visualization import make_images_with_masks
+from src.utils.visualization import make_images_with_masks, visualize_segmentation_masks
 
 
 class Trainer:
@@ -200,6 +200,7 @@ class Trainer:
             low=0, high=len(dataloader.dataset), size=(num_to_visualize,), dtype=int
         )
         all_masks = []
+        all_target_masks = []
         all_images = []
         with torch.no_grad():
             for i in idx:
@@ -209,6 +210,7 @@ class Trainer:
                 masks = model(img.to(self.device))
                 all_images.append(img)
                 all_masks.append(masks.to("cpu")[:, :3, ...])
+                all_target_masks.append(label)
 
         figure = make_images_with_masks(
             torch.cat(all_images, dim=0),
@@ -219,3 +221,14 @@ class Trainer:
         mlflow.log_figure(
             figure, f"{epoch_type}/epoch_{epoch}/model_mask_prediction.png"
         )
+
+        for i, (true_mask, pred_mask) in enumerate(zip(all_target_masks, all_masks)):
+            figure = visualize_segmentation_masks(
+                target=true_mask,
+                prediction=pred_mask,
+            )
+
+            mlflow.log_figure(
+                figure,
+                f"{epoch_type}/epoch_{epoch}/mask_comparison/comparison_{i+1}.png",
+            )
