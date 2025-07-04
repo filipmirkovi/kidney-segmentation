@@ -1,9 +1,11 @@
+from loguru import logger
 import torch
 import torch.nn as nn
 from einops.layers.torch import Rearrange
 from src.model.Perciever.Decoder import Decoder
 from src.model.Perciever.Encoder import Encoder
 from src.model.Perciever.PercieverProcessor import PercieverProcessor
+from src.model.utils import num_params
 
 
 class Perciever(nn.Module):
@@ -24,12 +26,15 @@ class Perciever(nn.Module):
             num_scaling_layers=num_scaling_layers,
             hidden_size=hidden_size,
         )
+        logger.info(f"Encoder params: {num_params(self.encoder)}")
         self.processor = PercieverProcessor(
             input_size=hidden_size,
             latent_size=hidden_size,
             num_perceptions=num_perceptions,
             attention_hidden_size=attenton_hidden_size,
         )
+        logger.info(f"Processor params: {num_params(self.processor)}")
+
         self.inv_rearange = Rearrange(
             "b (h w) c -> b c h w",
             h=self.encoder.output_size[0],
@@ -42,6 +47,8 @@ class Perciever(nn.Module):
             in_channels=hidden_size,
             num_scaling_layers=num_scaling_layers,
         )
+        logger.info(f"Decoder params: {num_params(self.decoder)}")
+
         self.softmax = StabileSoftmax()
 
     def forward(self, image: torch.Tensor) -> torch.Tensor:
