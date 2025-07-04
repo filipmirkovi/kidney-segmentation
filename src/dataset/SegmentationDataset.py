@@ -179,4 +179,4 @@ class ImageSplittingDatasetWrapper(Dataset):
         )
 
     def __len__(self):
-        return len(self.core_ds)
+        return len(self.core_dataset)
