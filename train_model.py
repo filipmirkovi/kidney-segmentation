@@ -60,7 +60,8 @@ def main(config_path: str | Path):
         full_dataset,
         lengths=[0.8, 0.2],
     )
-    class_weights = train_set.dataset.get_class_weights()
+    class_weights = None  # train_set.dataset.get_class_weights()
+
     cls_weight_report = [
         f"{class_name} : {class_weights[i]}"
         for i, class_name in enumerate(train_set.dataset.core_dataset.label_to_id)
