@@ -68,7 +68,7 @@ def main(config_path: str | Path):
         background_idx=3,
         image_channels=3,
     )
-    train_set = ImageSplittingDatasetWrapper(
+    validation_set = ImageSplittingDatasetWrapper(
         core_dataset=validation_set,
         patch_size=128,
         num_mask_regions=4,
