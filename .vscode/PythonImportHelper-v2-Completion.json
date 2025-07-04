@@ -115,6 +115,15 @@
         "documentation": {}
     },
     {
+        "label": "PIL",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "PIL",
+        "description": "PIL",
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
         "label": "Image",
         "importPath": "PIL",
         "description": "PIL",
@@ -652,7 +661,7 @@
         "kind": 6,
         "importPath": "src.dataset.SegmentationDataset",
         "description": "src.dataset.SegmentationDataset",
-        "peekOfCode": "class ImageSplittingDatasetWrapper(Dataset):\n    def __init__(\n        self,\n        core_dataset: Dataset,\n        patch_size=128,\n        image_channels=3,\n        num_mask_regions=4,\n        background_idx: int | None = 3,\n        topk: int = 4,\n    ):",
+        "peekOfCode": "class ImageSplittingDatasetWrapper(Dataset):\n    def __init__(\n        self,\n        core_dataset: Dataset,\n        patch_size=128,\n        image_channels=3,\n        num_mask_regions=4,\n        background_idx: int | None = 3,\n        topk: int | None = 4,\n    ):",
         "detail": "src.dataset.SegmentationDataset",
         "documentation": {}
     },

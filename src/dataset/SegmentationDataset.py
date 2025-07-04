@@ -154,7 +154,7 @@ class ImageSplittingDatasetWrapper(Dataset):
         image_channels=3,
         num_mask_regions=4,
         background_idx: int | None = 3,
-        topk: int = 4,
+        topk: int | None = 4,
     ):
         self.core_dataset = core_dataset
         self.image_splitter = ImageSplitter(
@@ -174,7 +174,7 @@ class ImageSplittingDatasetWrapper(Dataset):
         mask_batch = self.mask_splitter(mask[None])
         mask_area_topk = torch.topk(
             mask_batch[:, self.mask_idx, ...].sum(dim=(-1, -2, -3)),
-            k=self.topk,
+            k=self.topk if self.topk else image.shape[0],
         )
 
         return (

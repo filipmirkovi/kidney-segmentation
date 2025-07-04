@@ -1,3 +1,4 @@
+import PIL
 import sys
 from pathlib import Path
 import torch
@@ -60,7 +61,23 @@ def main(config_path: str | Path):
         full_dataset,
         lengths=[0.8, 0.2],
     )
-    class_weights = None  # train_set.dataset.get_class_weights()
+    train_set = ImageSplittingDatasetWrapper(
+        core_dataset=train_set,
+        patch_size=128,
+        num_mask_regions=4,
+        background_idx=3,
+        image_channels=3,
+    )
+    train_set = ImageSplittingDatasetWrapper(
+        core_dataset=validation_set,
+        patch_size=128,
+        num_mask_regions=4,
+        background_idx=3,
+        image_channels=3,
+        topk=None,
+    )
+
+    # train_set.dataset.get_class_weights()
 
     # cls_weight_report = [
     #    f"{class_name} : {class_weights[i]}"
