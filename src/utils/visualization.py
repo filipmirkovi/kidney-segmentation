@@ -27,7 +27,14 @@ def make_images_with_masks(
         )
         for i in range(batch_size)
     ]
-    image_grid = make_grid(masked_images, nrow=2)
+    if masked_images.shape[0] < 4:
+        nrow = 2
+    elif masked_images.shape[0] < 9:
+        nrow = 3
+    elif masked_images.shape[0] < 16:
+        nrow = 4
+
+    image_grid = make_grid(masked_images, nrow=nrow)
     figure, ax = plt.subplots()
 
     ax.imshow(image_grid.permute(1, 2, 0))
