@@ -62,12 +62,12 @@ def main(config_path: str | Path):
     )
     class_weights = None  # train_set.dataset.get_class_weights()
 
-    cls_weight_report = [
-        f"{class_name} : {class_weights[i]}"
-        for i, class_name in enumerate(train_set.dataset.core_dataset.label_to_id)
-    ]
+    # cls_weight_report = [
+    #    f"{class_name} : {class_weights[i]}"
+    #    for i, class_name in enumerate(train_set.dataset.core_dataset.label_to_id)
+    # ]
 
-    logger.success(f"Calculated class weights: " + "\n".join(cls_weight_report))
+    # logger.success(f"Calculated class weights: " + "\n".join(cls_weight_report))
     train_dataloader = DataLoader(
         train_set,
         batch_size=configs["batch_size"],
@@ -120,7 +120,7 @@ def main(config_path: str | Path):
 
     loss = torch.nn.CrossEntropyLoss(
         reduction="none",
-        weight=torch.tensor(class_weights).to(configs["device"]),
+        # weight=torch.tensor(class_weights).to(configs["device"]),
     )
 
     # SoftDiceLoss(
