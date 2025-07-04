@@ -21,6 +21,8 @@ def make_images_with_masks(
     binary_masks = masks > 0.5
     batch_size = image.shape[0]
     image = image.mul(0.5).add(0.5)
+    colors = ["blue", "orange", "green", "red", "purple"]
+    colors = colors[:num_classes]
     masked_images = [
         draw_segmentation_masks(
             image[i], binary_masks[i][:num_classes], alpha=alpha, colors=colors
