@@ -204,7 +204,8 @@ class Trainer:
         with torch.no_grad():
             for i in idx:
                 img, label = dataloader.dataset[i]
-                img = img[None, ...]
+                if len(img.shape) < 4:
+                    img = img[None, ...]
                 masks = model(img.to(self.device))
                 all_images.append(img)
                 all_masks.append(masks.to("cpu")[:, :3, ...])

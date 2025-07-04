@@ -167,6 +167,7 @@ class ImageSplittingDatasetWrapper(Dataset):
         self.topk = topk
 
     def __getitem__(self, index):
+
         image, mask = self.core_dataset[index]
         image_batch = self.image_splitter(image[None])
         mask_batch = self.mask_splitter(mask[None])
