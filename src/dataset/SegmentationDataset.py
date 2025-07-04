@@ -1,5 +1,4 @@
 from typing import Optional
-from collections import defaultdict
 import os
 import json
 from dataclasses import dataclass
@@ -12,6 +11,8 @@ from cv2 import fillPoly
 from torch.utils.data import Dataset
 from torchvision.transforms.functional import pil_to_tensor
 from tqdm import tqdm
+
+from src.dataset.utils import ImageSplitter
 
 
 @dataclass
@@ -143,3 +144,39 @@ class SegmentationDataset(Dataset):
         class_weights /= len(self)
 
         return class_weights
+
+
+class ImageSplittingDatasetWrapper(Dataset):
+    def __init__(
+        self,
+        core_dataset: Dataset,
+        patch_size=128,
+        image_channels=3,
+        num_mask_regions=4,
+        background_idx: int | None = 3,
+        topk: int = 4,
+    ):
+        self.core_ds = core_dataset
+        self.image_splitter = ImageSplitter(
+            patch_size=patch_size, num_channels=image_channels
+        )
+        self.mask_splitter = ImageSplitter(
+            patch_size=patch_size, num_channels=num_mask_regions
+        )
+        self.mask_idx = [i for i in range(num_mask_regions) if i != background_idx]
+        self.topk = topk
+
+    def __getitem__(self, index):
+        image, mask = self.core_ds[index]
+        image_batch = self.image_splitter(image[None])
+        mask_batch = self.mask_splitter(mask[None])
+        mask_area_topk = torch.topk(
+            mask_batch[:, self.mask_idx, ...].sum(dim=(-1, -2, -3)), k=self.topk
+        )
+        return (
+            image_batch[mask_area_topk.indices, ...],
+            mask_batch[mask_area_topk.indices, ...],
+        )
+
+    def __len__(self):
+        return len(self.core_ds)

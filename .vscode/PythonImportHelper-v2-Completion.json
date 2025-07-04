@@ -32,14 +32,6 @@
         "documentation": {}
     },
     {
-        "label": "defaultdict",
-        "importPath": "collections",
-        "description": "collections",
-        "isExtraImport": true,
-        "detail": "collections",
-        "documentation": {}
-    },
-    {
         "label": "os",
         "kind": 6,
         "isExtraImport": true,
@@ -221,12 +213,52 @@
         "documentation": {}
     },
     {
+        "label": "ImageSplitter",
+        "importPath": "src.dataset.utils",
+        "description": "src.dataset.utils",
+        "isExtraImport": true,
+        "detail": "src.dataset.utils",
+        "documentation": {}
+    },
+    {
+        "label": "custom_collate_fn",
+        "importPath": "src.dataset.utils",
+        "description": "src.dataset.utils",
+        "isExtraImport": true,
+        "detail": "src.dataset.utils",
+        "documentation": {}
+    },
+    {
         "label": "torch.nn",
         "kind": 6,
         "isExtraImport": true,
         "importPath": "torch.nn",
         "description": "torch.nn",
         "detail": "torch.nn",
+        "documentation": {}
+    },
+    {
+        "label": "Rearrange",
+        "importPath": "einops.layers.torch",
+        "description": "einops.layers.torch",
+        "isExtraImport": true,
+        "detail": "einops.layers.torch",
+        "documentation": {}
+    },
+    {
+        "label": "Rearrange",
+        "importPath": "einops.layers.torch",
+        "description": "einops.layers.torch",
+        "isExtraImport": true,
+        "detail": "einops.layers.torch",
+        "documentation": {}
+    },
+    {
+        "label": "Rearrange",
+        "importPath": "einops.layers.torch",
+        "description": "einops.layers.torch",
+        "isExtraImport": true,
+        "detail": "einops.layers.torch",
         "documentation": {}
     },
     {
@@ -261,22 +293,6 @@
         "description": "src.model.Perciever.Layers.FCNN",
         "isExtraImport": true,
         "detail": "src.model.Perciever.Layers.FCNN",
-        "documentation": {}
-    },
-    {
-        "label": "Rearrange",
-        "importPath": "einops.layers.torch",
-        "description": "einops.layers.torch",
-        "isExtraImport": true,
-        "detail": "einops.layers.torch",
-        "documentation": {}
-    },
-    {
-        "label": "Rearrange",
-        "importPath": "einops.layers.torch",
-        "description": "einops.layers.torch",
-        "isExtraImport": true,
-        "detail": "einops.layers.torch",
         "documentation": {}
     },
     {
@@ -542,6 +558,14 @@
         "documentation": {}
     },
     {
+        "label": "ImageSplittingDatasetWrapper",
+        "importPath": "src.dataset.SegmentationDataset",
+        "description": "src.dataset.SegmentationDataset",
+        "isExtraImport": true,
+        "detail": "src.dataset.SegmentationDataset",
+        "documentation": {}
+    },
+    {
         "label": "ArgumentParser",
         "importPath": "argparse",
         "description": "argparse",
@@ -608,12 +632,39 @@
         "documentation": {}
     },
     {
+        "label": "ImageSplittingDatasetWrapper",
+        "kind": 6,
+        "importPath": "src.dataset.SegmentationDataset",
+        "description": "src.dataset.SegmentationDataset",
+        "peekOfCode": "class ImageSplittingDatasetWrapper(Dataset):\n    def __init__(\n        self,\n        core_dataset: Dataset,\n        patch_size=128,\n        image_channels=3,\n        num_mask_regions=4,\n        background_idx: int | None = 3,\n        topk: int = 4,\n    ):",
+        "detail": "src.dataset.SegmentationDataset",
+        "documentation": {}
+    },
+    {
         "label": "normalize_image",
         "kind": 2,
         "importPath": "src.dataset.SegmentationDataset",
         "description": "src.dataset.SegmentationDataset",
         "peekOfCode": "def normalize_image(img: torch.Tensor) -> torch.Tensor:\n    img.div_(255.0)\n    img = (img - 0.5) / 0.5\n    return img\nclass SegmentationDataset(Dataset):\n    def __init__(\n        self,\n        images_path: str | Path,\n        labels_path: Optional[str | Path] = None,\n        labels_yaml: str | Path = \"../../configs/label_ids.yaml\",",
         "detail": "src.dataset.SegmentationDataset",
+        "documentation": {}
+    },
+    {
+        "label": "ImageSplitter",
+        "kind": 6,
+        "importPath": "src.dataset.utils",
+        "description": "src.dataset.utils",
+        "peekOfCode": "class ImageSplitter:\n    def __init__(self, patch_size: int | tuple[int], num_channels: int):\n        self.patch_size = patch_size\n        self.num_channels = num_channels\n        self.unfold = nn.Unfold(kernel_size=patch_size, stride=patch_size)\n        self.rearange = Rearrange(\n            \"b (c pw ph) L -> (b L) c pw ph\",\n            c=self.num_channels,\n            pw=self.patch_size,\n            ph=self.patch_size,",
+        "detail": "src.dataset.utils",
+        "documentation": {}
+    },
+    {
+        "label": "custom_collate_fn",
+        "kind": 2,
+        "importPath": "src.dataset.utils",
+        "description": "src.dataset.utils",
+        "peekOfCode": "def custom_collate_fn(\n    batch: list[tuple[torch.Tensor, torch.Tensor]],\n) -> tuple[torch.Tensor, torch.Tensor]:\n    \"\"\"\n    Custom collate function for DSWrapper dataset.\n    Args:\n        batch: List of tuples (image_patches, mask_patches) where each has shape (topk, ...)\n    Returns:\n        Tuple of (batched_images, batched_masks) with shape (batch_size * topk, ...)\n    \"\"\"",
+        "detail": "src.dataset.utils",
         "documentation": {}
     },
     {

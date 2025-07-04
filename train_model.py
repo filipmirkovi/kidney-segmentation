@@ -11,9 +11,13 @@ from src.model.UNet.UNet import UNet
 from src.model.loss import SoftDiceLoss
 from src.model.utils import num_params
 
-from src.dataset.SegmentationDataset import SegmentationDataset
+from src.dataset.SegmentationDataset import (
+    SegmentationDataset,
+    ImageSplittingDatasetWrapper,
+)
 from src.Trainer import Trainer
 from src.model.Perciever.Perciever import Perciever
+from src.dataset.utils import custom_collate_fn
 
 
 # Configure loguru at the start of the script
@@ -40,38 +44,52 @@ def main(config_path: str | Path):
     mlflow.set_tracking_uri(uri=configs["mlflow_tracking_uri"])
     mlflow.set_experiment(configs["experiment"])
     logger.info("Setting up datasets...")
+    full_dataset = SegmentationDataset(
+        images_path=Path(configs["data_path"], "train"),
+        labels_path=Path(configs["data_path"], "polygons.jsonl"),
+        labels_yaml="configs/label_ids.yaml",
+    )
+    full_dataset = ImageSplittingDatasetWrapper(
+        core_dataset=full_dataset,
+        patch_size=128,
+        num_mask_regions=4,
+        background_idx=3,
+        image_channels=3,
+    )
     train_set, validation_set = random_split(
-        SegmentationDataset(
-            images_path=Path(configs["data_path"], "train"),
-            labels_path=Path(configs["data_path"], "polygons.jsonl"),
-            labels_yaml="configs/label_ids.yaml",
-        ),
+        full_dataset,
         lengths=[0.8, 0.2],
     )
     class_weights = train_set.dataset.get_class_weights()
     cls_weight_report = [
         f"{class_name} : {class_weights[i]}"
-        for i, class_name in enumerate(train_set.dataset.label_to_id)
+        for i, class_name in enumerate(train_set.dataset.core_dataset.label_to_id)
     ]
 
     logger.success(f"Calculated class weights: " + "\n".join(cls_weight_report))
     train_dataloader = DataLoader(
-        train_set, batch_size=configs["batch_size"], shuffle=True
+        train_set,
+        batch_size=configs["batch_size"],
+        shuffle=True,
+        collate_fn=custom_collate_fn,
     )
     val_dataloader = DataLoader(
-        validation_set, batch_size=configs["batch_size"], shuffle=False
+        validation_set,
+        batch_size=configs["batch_size"],
+        shuffle=False,
+        collate_fn=custom_collate_fn,
     )
     logger.success("Datasets created!")
 
     logger.info("Initializing model...")
 
     model = Perciever(
-        img_size=512,
+        img_size=128,
         in_channels=3,
         out_channels=4,
         hidden_size=256,
-        num_perceptions=1024,
-        attenton_hidden_size=128,
+        num_perceptions=512,
+        attenton_hidden_size=64,
         num_scaling_layers=2,
     )
 
