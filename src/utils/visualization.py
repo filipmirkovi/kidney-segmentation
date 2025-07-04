@@ -27,10 +27,11 @@ def make_images_with_masks(
         )
         for i in range(batch_size)
     ]
-    nrow = 2
-    if len(masked_images) > 2 and len(masked_images) < 9:
+    if batch_size <= 4:
+        nrow = 2
+    elif batch_size <= 9:
         nrow = 3
-    elif len(masked_images) < 16:
+    else:
         nrow = 4
 
     image_grid = make_grid(masked_images, nrow=nrow)

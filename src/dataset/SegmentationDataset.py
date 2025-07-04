@@ -165,18 +165,27 @@ class ImageSplittingDatasetWrapper(Dataset):
         )
         self.mask_idx = [i for i in range(num_mask_regions) if i != background_idx]
         self.topk = topk
+        self.patch_size = patch_size
 
     def __getitem__(self, index):
 
         image, mask = self.core_dataset[index]
         image_batch = self.image_splitter(image[None])
         mask_batch = self.mask_splitter(mask[None])
-        mask_area_topk = torch.topk(
-            mask_batch[:, self.mask_idx, ...].sum(dim=(-1, -2, -3)), k=self.topk
+        mask_area = mask_batch[:, self.mask_idx, ...].sum(dim=(-1, -2, -3))
+        # mask_area_topk = torch.topk(
+        #     mask_batch[:, self.mask_idx, ...].sum(dim=(-1, -2, -3))
+        #
+        #    k=self.topk,
+        # )
+        choice_idx = np.random.choice(
+            range(image_batch.shape[0]), p=torch.softmax(mask_area), dtype=int
         )
         return (
-            image_batch[mask_area_topk.indices, ...],
-            mask_batch[mask_area_topk.indices, ...],
+            image_batch[choice_idx, ...],
+            mask_batch[choice_idx, ...],
+            # image_batch[mask_area_topk.indices, ...],
+            # mask_batch[mask_area_topk.indices, ...],
         )
 
     def __len__(self):
