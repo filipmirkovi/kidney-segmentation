@@ -50,13 +50,13 @@ def main(config_path: str | Path):
         labels_path=Path(configs["data_path"], "polygons.jsonl"),
         labels_yaml="configs/label_ids.yaml",
     )
-    full_dataset = ImageSplittingDatasetWrapper(
-        core_dataset=full_dataset,
-        patch_size=128,
-        num_mask_regions=4,
-        background_idx=3,
-        image_channels=3,
-    )
+    # full_dataset = ImageSplittingDatasetWrapper(
+    #    core_dataset=full_dataset,
+    #    patch_size=128,
+    #    num_mask_regions=4,
+    #    background_idx=3,
+    #    image_channels=3,
+    # )
     train_set, validation_set = random_split(
         full_dataset,
         lengths=[0.8, 0.2],
