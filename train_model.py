@@ -50,13 +50,7 @@ def main(config_path: str | Path):
         labels_path=Path(configs["data_path"], "polygons.jsonl"),
         labels_yaml="configs/label_ids.yaml",
     )
-    # full_dataset = ImageSplittingDatasetWrapper(
-    #    core_dataset=full_dataset,
-    #    patch_size=128,
-    #    num_mask_regions=4,
-    #    background_idx=3,
-    #    image_channels=3,
-    # )
+
     train_set, validation_set = random_split(
         full_dataset,
         lengths=[0.8, 0.2],
@@ -77,14 +71,14 @@ def main(config_path: str | Path):
         topk=None,
     )
 
-    # train_set.dataset.get_class_weights()
+    class_weights = train_set.dataset.get_class_weights()
 
-    # cls_weight_report = [
-    #    f"{class_name} : {class_weights[i]}"
-    #    for i, class_name in enumerate(train_set.dataset.core_dataset.label_to_id)
-    # ]
+    cls_weight_report = [
+        f"{class_name} : {class_weights[i]}"
+        for i, class_name in enumerate(train_set.dataset.core_dataset.label_to_id)
+    ]
 
-    # logger.success(f"Calculated class weights: " + "\n".join(cls_weight_report))
+    logger.success(f"Calculated class weights: " + "\n".join(cls_weight_report))
     train_dataloader = DataLoader(
         train_set,
         batch_size=configs["batch_size"],
@@ -136,7 +130,7 @@ def main(config_path: str | Path):
 
     loss = torch.nn.CrossEntropyLoss(
         reduction="none",
-        # weight=torch.tensor(class_weights).to(configs["device"]),
+        weight=torch.tensor(class_weights).to(configs["device"]),
     )
 
     # SoftDiceLoss(
