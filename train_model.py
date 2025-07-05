@@ -71,7 +71,7 @@ def main(config_path: str | Path):
         topk=None,
     )
 
-    class_weights = train_set.dataset.get_class_weights()
+    class_weights = train_set.core_dataset.get_class_weights()
 
     cls_weight_report = [
         f"{class_name} : {class_weights[i]}"
