@@ -226,7 +226,10 @@ class Trainer:
         )
 
         for i, (true_mask, pred_mask) in enumerate(
-            zip(torch.split(all_target_masks, 0), torch.split(all_masks, 0))
+            zip(
+                torch.split(all_target_masks, 1, dim=0),
+                torch.split(all_masks, 1, dim=0),
+            )
         ):
             figure = visualize_segmentation_masks(
                 target=true_mask,
