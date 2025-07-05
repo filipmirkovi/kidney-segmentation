@@ -176,12 +176,14 @@ class ImageSplittingDatasetWrapper(Dataset):
             return image_batch, mask_batch
 
         area_prob = mask_batch[:, self.mask_idx, ...].sum(dim=(-1, -2, -3)).add(1.0)
-        print(area_prob)
         print(f"Shapes {mask_batch.shape} {area_prob.shape}")
         area_prob = area_prob / area_prob.sum()
         print(area_prob.sum())
         idx = np.random.choice(
-            range(mask_batch.shape[0]), replace=False, size=self.topk, p=area_prob
+            range(mask_batch.shape[0]),
+            replace=False,
+            size=self.topk,
+            p=area_prob.numpy(),
         )
         # mask_area_topk = torch.topk(
         #    mask_batch[:, self.mask_idx, ...].sum(dim=(-1, -2, -3)),
