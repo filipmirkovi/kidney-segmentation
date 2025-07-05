@@ -212,7 +212,7 @@ class Trainer:
                 all_masks.append(masks.to("cpu")[:, :3, ...])
                 all_target_masks.append(label)
 
-        all_images = (torch.cat(all_images, dim=0),)
+        all_images = torch.cat(all_images, dim=0)
         all_masks = torch.cat(all_masks, dim=0)
         all_target_masks = torch.cat(all_target_masks, dim=0)
         figure = make_images_with_masks(
