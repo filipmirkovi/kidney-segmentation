@@ -663,14 +663,6 @@
         "documentation": {}
     },
     {
-        "label": "SoftDiceLoss",
-        "importPath": "src.model.loss",
-        "description": "src.model.loss",
-        "isExtraImport": true,
-        "detail": "src.model.loss",
-        "documentation": {}
-    },
-    {
         "label": "Trainer",
         "importPath": "src.Trainer",
         "description": "src.Trainer",

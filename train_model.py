@@ -9,7 +9,6 @@ import yaml
 from torch.utils.data import DataLoader, random_split
 
 from src.model.UNet.UNet import UNet
-from src.model.loss import SoftDiceLoss
 from src.model.utils import num_params
 
 from src.dataset.SegmentationDataset import (
@@ -71,14 +70,15 @@ def main(config_path: str | Path):
         topk=None,
     )
 
-    class_weights = train_set.core_dataset.dataset.get_class_weights()
+    # class_weights = train_set.core_dataset.dataset.get_class_weights()
 
-    cls_weight_report = [
-        f"{class_name} : {class_weights[i]}"
-        for i, class_name in enumerate(train_set.core_dataset.dataset.label_to_id)
-    ]
+    # cls_weight_report = [
+    #    f"{class_name} : {class_weights[i]}"
+    #    for i, class_name in enumerate(train_set.core_dataset.dataset.label_to_id)
+    # ]
 
-    logger.success(f"Calculated class weights: " + "\n".join(cls_weight_report))
+    # logger.success(f"Calculated class weights: " + "\n".join(cls_weight_report))
+
     train_dataloader = DataLoader(
         train_set,
         batch_size=configs["batch_size"],
@@ -130,7 +130,7 @@ def main(config_path: str | Path):
 
     loss = torch.nn.CrossEntropyLoss(
         reduction="none",
-        weight=torch.tensor(class_weights).to(configs["device"]),
+        # weight=torch.tensor(class_weights).to(configs["device"]),
     )
 
     # SoftDiceLoss(
