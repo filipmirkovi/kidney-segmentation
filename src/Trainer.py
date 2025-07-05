@@ -212,6 +212,9 @@ class Trainer:
                 all_masks.append(masks.to("cpu")[:, :3, ...])
                 all_target_masks.append(label)
 
+        all_images = (torch.cat(all_images, dim=0),)
+        all_masks = torch.cat(all_masks, dim=0)
+        all_target_masks = torch.cat(all_target_masks, dim=0)
         figure = make_images_with_masks(
             torch.cat(all_images, dim=0),
             torch.cat(all_masks, dim=0),
@@ -222,7 +225,9 @@ class Trainer:
             figure, f"{epoch_type}/epoch_{epoch}/model_mask_prediction.png"
         )
 
-        for i, (true_mask, pred_mask) in enumerate(zip(all_target_masks, all_masks)):
+        for i, (true_mask, pred_mask) in enumerate(
+            zip(torch.split(all_target_masks, 0), torch.split(all_masks, 0))
+        ):
             figure = visualize_segmentation_masks(
                 target=true_mask,
                 prediction=pred_mask,
