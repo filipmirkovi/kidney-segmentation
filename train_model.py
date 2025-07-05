@@ -75,7 +75,7 @@ def main(config_path: str | Path):
 
     cls_weight_report = [
         f"{class_name} : {class_weights[i]}"
-        for i, class_name in enumerate(train_set.dataset.core_dataset.label_to_id)
+        for i, class_name in enumerate(train_set.core_dataset.dataset.label_to_id)
     ]
 
     logger.success(f"Calculated class weights: " + "\n".join(cls_weight_report))
