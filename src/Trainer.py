@@ -216,8 +216,8 @@ class Trainer:
         all_masks = torch.cat(all_masks, dim=0)
         all_target_masks = torch.cat(all_target_masks, dim=0)
         figure = make_images_with_masks(
-            torch.cat(all_images, dim=0),
-            torch.cat(all_masks, dim=0),
+            all_images,
+            all_masks,
             num_classes=len(self.id_to_label) - 1,
         )
 
