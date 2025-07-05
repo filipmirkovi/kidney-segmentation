@@ -53,7 +53,7 @@ def visualize_segmentation_masks(
     prediction: Union[torch.Tensor, np.ndarray],
     image: Optional[Union[torch.Tensor, np.ndarray]] = None,
     class_names: Optional[List[str]] = None,
-    colors: Optional[List[str]] = None,
+    colors: Optional[List[str]] = ["blue", "orange", "red"],
     alpha: float = 0.7,
     figsize: Tuple[int, int] = (15, 5),
     show_difference: bool = True,
@@ -143,9 +143,9 @@ def visualize_segmentation_masks(
     if show_difference:
         difference = _create_difference_mask(target, prediction, background_idx)
         diff_colors = [
-            "green",
-            "red",
-            "blue",
+            "tab:green",
+            "tab:red",
+            "tab:blue",
         ]  # correct, false_positive, false_negative
         diff_cmap = ListedColormap(diff_colors)
 

@@ -231,6 +231,8 @@ class Trainer:
                 torch.split(all_masks, 1, dim=0),
             )
         ):
+            if i > 4:
+                break
             figure = visualize_segmentation_masks(
                 target=true_mask.squeeze(0),
                 prediction=pred_mask.squeeze(0),
