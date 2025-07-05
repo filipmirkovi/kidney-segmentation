@@ -178,7 +178,7 @@ class ImageSplittingDatasetWrapper(Dataset):
         area_prob = mask_batch[:, self.mask_idx, ...].sum(dim=(-1, -2, -3)).add(1.0)
         print(area_prob)
         area_prob = area_prob / area_prob.sum()
-        print(area_prob)
+        print(area_prob.sum())
         idx = np.random.choice(
             range(mask_batch.shape[0]), replace=False, size=self.topk, p=area_prob
         )
