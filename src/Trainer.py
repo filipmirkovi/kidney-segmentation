@@ -225,20 +225,12 @@ class Trainer:
             figure, f"{epoch_type}/epoch_{epoch}/model_mask_prediction.png"
         )
 
-        for i, (true_mask, pred_mask) in enumerate(
-            zip(
-                torch.split(all_target_masks, 1, dim=0),
-                torch.split(all_masks, 1, dim=0),
-            )
-        ):
-            if i > 4:
-                break
-            figure = visualize_segmentation_masks(
-                target=true_mask.squeeze(0),
-                prediction=pred_mask.squeeze(0),
-            )
+        figure = visualize_segmentation_masks(
+            target=all_target_masks,
+            prediction=all_masks,
+        )
 
-            mlflow.log_figure(
-                figure,
-                f"{epoch_type}/epoch_{epoch}/mask_comparison/comparison_{i+1}.png",
-            )
+        mlflow.log_figure(
+            figure,
+            f"{epoch_type}/epoch_{epoch}/mask_comparison/comparison_{i+1}.png",
+        )
