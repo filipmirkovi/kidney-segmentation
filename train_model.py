@@ -54,16 +54,17 @@ def main(config_path: str | Path):
         full_dataset,
         lengths=[0.8, 0.2],
     )
+    patch_size = 64
     train_set = ImageSplittingDatasetWrapper(
         core_dataset=train_set,
-        patch_size=128,
+        patch_size=patch_size,
         num_mask_regions=4,
         background_idx=3,
         image_channels=3,
     )
     validation_set = ImageSplittingDatasetWrapper(
         core_dataset=validation_set,
-        patch_size=128,
+        patch_size=patch_size,
         num_mask_regions=4,
         background_idx=3,
         image_channels=3,
@@ -96,7 +97,7 @@ def main(config_path: str | Path):
     logger.info("Initializing model...")
 
     model = Perciever(
-        img_size=128,
+        img_size=patch_size,
         in_channels=3,
         out_channels=4,
         hidden_size=512,
