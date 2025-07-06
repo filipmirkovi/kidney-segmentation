@@ -59,12 +59,11 @@ def visualize_segmentation_masks(
     batch, seg_regions, H, W = target.shape
     colors = COLORS[:seg_regions]
     mask_idx = [i for i in range(seg_regions) if i != background_idx]
-    canvas = torch.zeros((3, H, W))
+    canvas = torch.ones((3, H, W))
     target_bitmap = target > 0.5
     prediction_bitmap = prediction > 0.5
     target_segmap = []
     prediction_segmap = []
-    print(target.shape, target_bitmap.shape, prediction_bitmap.shape, batch)
     for i in range(batch):
         target_segmap.append(
             draw_segmentation_masks(
@@ -81,6 +80,8 @@ def visualize_segmentation_masks(
     prediction_grid = make_grid(prediction_segmap)
     figure, ax = plt.subplots(2, 1, figsize=figsize)
 
+    ax[0].set_title("Target Masks")
     ax[0].imshow(target_grid.permute(1, 2, 0))
+    ax[1].set_title("Predicted Masks")
     ax[1].imshow(prediction_grid.permute(1, 2, 0))
     return figure
