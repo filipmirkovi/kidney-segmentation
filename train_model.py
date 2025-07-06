@@ -133,13 +133,6 @@ def main(config_path: str | Path):
         # weight=torch.tensor(class_weights).to(configs["device"]),
     )
 
-    # SoftDiceLoss(
-    #    n_classes=int(configs["num_segmentation_regions"]) + 1,
-    #    add_background=False,
-    #    reduction="none",
-    #    class_weights=class_weights,
-    # )
-
     logger.info("Initializing trainer...")
     trainer = Trainer(
         num_epochs=int(configs["num_epochs"]),

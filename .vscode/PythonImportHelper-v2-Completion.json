@@ -989,7 +989,16 @@
         "kind": 2,
         "importPath": "src.utils.visualization",
         "description": "src.utils.visualization",
-        "peekOfCode": "def visualize_segmentation_masks(\n    target: Union[torch.Tensor, np.ndarray],\n    prediction: Union[torch.Tensor, np.ndarray],\n    image: Optional[Union[torch.Tensor, np.ndarray]] = None,\n    class_names: Optional[List[str]] = None,\n    colors: Optional[List[str]] = [\"blue\", \"orange\", \"red\"],\n    alpha: float = 0.7,\n    figsize: Tuple[int, int] = (15, 5),\n    show_difference: bool = True,\n    background_idx: Optional[int] = None,",
+        "peekOfCode": "def visualize_segmentation_masks(\n    target: Union[torch.Tensor, np.ndarray],\n    prediction: Union[torch.Tensor, np.ndarray],\n    alpha: float = 0.7,\n    figsize: Tuple[int, int] = (15, 5),\n    background_idx: Optional[int] = None,\n) -> plt.Figure:\n    batch, seg_regions, H, W = target.shape\n    colors = COLORS[:seg_regions]\n    mask_idx = [i for i in range(seg_regions) if i != background_idx]",
+        "detail": "src.utils.visualization",
+        "documentation": {}
+    },
+    {
+        "label": "COLORS",
+        "kind": 5,
+        "importPath": "src.utils.visualization",
+        "description": "src.utils.visualization",
+        "peekOfCode": "COLORS = [\"blue\", \"orange\", \"green\", \"red\", \"purple\"]\ndef make_images_with_masks(\n    image: torch.Tensor,\n    masks: torch.Tensor,\n    num_classes: int,\n    colors: list[str] = None,\n    alpha: float = 0.6,\n) -> plt.Figure:\n    assert (\n        len(image.shape) == 4",
         "detail": "src.utils.visualization",
         "documentation": {}
     },
