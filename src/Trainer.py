@@ -207,6 +207,8 @@ class Trainer:
                 img, label = dataloader.dataset[i]
                 if len(img.shape) < 4:
                     img = img[None, ...]
+                if len(label.shape) < 4:
+                    label = label[None, ...]
                 masks = model(img.to(self.device))
                 all_images.append(img)
                 all_masks.append(masks.to("cpu")[:, :3, ...])
