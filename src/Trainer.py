@@ -228,8 +228,7 @@ class Trainer:
         )
 
         figure = visualize_segmentation_masks(
-            target=all_target_masks,
-            prediction=all_masks,
+            target=all_target_masks, prediction=all_masks, background_idx=3
         )
 
         mlflow.log_figure(
