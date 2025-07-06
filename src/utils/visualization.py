@@ -25,7 +25,7 @@ def make_images_with_masks(
         len(masks.shape) == 4
     ), f"The mask tesnor should be bathced! It has shape {masks.shape}, but shape B,num_masks,H,W is expected!"
 
-    binary_masks = torch.softmax(masks, dim=-3) > 0.5
+    binary_masks = masks > 0.5
     batch_size = image.shape[0]
     image = image.mul(0.5).add(0.5)
     colors = COLORS[:num_classes]
@@ -61,7 +61,7 @@ def visualize_segmentation_masks(
     mask_idx = [i for i in range(seg_regions) if i != background_idx]
     canvas = torch.ones((3, H, W))
     target_bitmap = target > 0.5
-    prediction_bitmap = torch.softmax(prediction, dim=-3) > 0.5
+    prediction_bitmap = prediction > 0.5
     target_segmap = []
     prediction_segmap = []
     for i in range(batch):

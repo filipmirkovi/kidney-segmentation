@@ -211,7 +211,7 @@ class Trainer:
                     img = img[None, ...]
                 if len(label.shape) < 4:
                     label = label[None, ...]
-                masks = model(img.to(self.device))
+                masks = torch.softmax(model(img.to(self.device)), dim=-3)
                 all_images.append(img)
                 all_masks.append(masks.to("cpu")[:, :3, ...])
                 all_target_masks.append(label)
