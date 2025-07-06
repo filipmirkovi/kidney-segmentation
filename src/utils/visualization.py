@@ -82,6 +82,12 @@ def visualize_segmentation_masks(
 
     ax[0].set_title("Target Masks")
     ax[0].imshow(target_grid.permute(1, 2, 0))
+    ax[0].set_xticks([])
+    ax[0].set_yticks([])
+
     ax[1].set_title("Predicted Masks")
     ax[1].imshow(prediction_grid.permute(1, 2, 0))
+    ax[1].set_xticks([])
+    ax[1].set_yticks([])
+
     return figure
