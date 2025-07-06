@@ -110,6 +110,7 @@ class Trainer:
                 self.eval_step_counter.update()
                 x, y = batch
                 x, y = x.to(self.device), y.to(self.device)
+                y = torch.argmax(y, dim=-3)
                 y_pred: torch.Tensor = self.model(x)
                 loss: torch.Tensor = self.loss_fn(y_pred, y)
                 loss = loss.mean(
