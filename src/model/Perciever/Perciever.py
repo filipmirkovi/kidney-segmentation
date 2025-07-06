@@ -56,6 +56,7 @@ class Perciever(nn.Module):
         embedding = self.processor(embedding)
         embedding = self.inv_rearange(embedding)
         mask = self.decoder(embedding)
+        mask = self.softmax(mask)
         return mask
 
 
