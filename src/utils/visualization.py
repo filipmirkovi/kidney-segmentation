@@ -64,6 +64,7 @@ def visualize_segmentation_masks(
     prediction_bitmap = prediction > 0.5
     target_segmap = []
     prediction_segmap = []
+    print(target.shape, target_bitmap.shape, batch)
     for i in range(batch):
         target_segmap.append(
             draw_segmentation_masks(
