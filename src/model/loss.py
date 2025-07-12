@@ -11,13 +11,16 @@ class RecallWeightedCrossEntropy(nn.Module):
         self.num_classes = num_classes
 
     def forward(self, logits: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
+        device = logits.device
         predictions = logits.argmax(dim=-3)
-        recall_per_class = torch.zeros(self.num_classes)
+        recall_per_class = torch.zeros(self.num_classes, device=device)
         for class_idx in range(self.num_classes):
             index = target == class_idx
             TP = (predictions[index] == target[index]).float().sum()
             recall_per_class[class_idx] = TP / index.float().sum()
-        self.base_loss.weight = torch.ones_like(recall_per_class) - recall_per_class
+        self.base_loss.weight = (
+            torch.ones_like(recall_per_class, device=device) - recall_per_class
+        )
         loss = self.base_loss(logits, target)
         return loss
 

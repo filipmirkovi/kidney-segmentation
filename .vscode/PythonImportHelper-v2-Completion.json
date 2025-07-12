@@ -934,7 +934,7 @@
         "kind": 6,
         "importPath": "src.model.loss",
         "description": "src.model.loss",
-        "peekOfCode": "class RecallWeightedCrossEntropy(nn.Module):\n    def __init__(self, num_classes: int, reduction: str = \"none\"):\n        super().__init__()\n        self.base_loss = nn.CrossEntropyLoss(reduction=reduction)\n        self.num_classes = num_classes\n    def forward(self, logits: torch.Tensor, target: torch.Tensor) -> torch.Tensor:\n        predictions = logits.argmax(dim=-3)\n        recall_per_class = torch.zeros(self.num_classes)\n        for class_idx in range(self.num_classes):\n            index = target == class_idx",
+        "peekOfCode": "class RecallWeightedCrossEntropy(nn.Module):\n    def __init__(self, num_classes: int, reduction: str = \"none\"):\n        super().__init__()\n        self.base_loss = nn.CrossEntropyLoss(reduction=reduction)\n        self.num_classes = num_classes\n    def forward(self, logits: torch.Tensor, target: torch.Tensor) -> torch.Tensor:\n        device = logits.device\n        predictions = logits.argmax(dim=-3)\n        recall_per_class = torch.zeros(self.num_classes, device=device)\n        for class_idx in range(self.num_classes):",
         "detail": "src.model.loss",
         "documentation": {}
     },
