@@ -33,7 +33,7 @@ class Perciever(nn.Module):
             latent_size=hidden_size,
             num_perceptions=num_perceptions,
             attention_hidden_size=attenton_hidden_size,
-            steps=num_perciever_steps,
+            num_steps=num_perciever_steps,
         )
         logger.info(f"Processor params: {num_params(self.processor)}")
 
