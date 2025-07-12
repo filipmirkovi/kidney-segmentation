@@ -99,11 +99,11 @@ class Trainer:
                 self.visualization_callback(
                     self.model, self.train_dataloader, epoch=epoch, epoch_type="train"
                 )
-            pbar.set_postfix_str(f"Epoch:{epoch:4d}\tLoss = {loss.item():10.6f}")
+            pbar.set_postfix_str(f"Epoch:{epoch:4d}\tLoss = {loss.mean().item():10.6f}")
 
         self.scheduler.step()
 
-    def _validation_epoch(self):
+    def _validation_epoch(self, epoch: int):
         self.loss_monitor.reset()
         self.model.eval()
         self.iou_score.compute()
@@ -139,7 +139,9 @@ class Trainer:
                     self.log_best_model(
                         self.model, class_iou.mean(dim=0), example_data=x
                     )
-                pbar.set_postfix_str(f"Epoch:{epoch:4d}\tLoss = {loss.item():10.6f}")
+                pbar.set_postfix_str(
+                    f"Epoch:{epoch:4d}\tLoss = {loss.mean().item():10.6f}"
+                )
 
     def log_best_model(
         self,
@@ -191,7 +193,7 @@ class Trainer:
             )
 
             if epoch_idx % self.validate_every == 0:
-                self._validation_epoch()
+                self._validation_epoch(epoch=epoch_idx)
 
     def visualization_callback(
         self,
