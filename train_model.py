@@ -103,7 +103,7 @@ def main(config_path: str | Path):
         hidden_size=128,
         num_perceptions=1024,
         attenton_hidden_size=64,
-        num_scaling_layers=2,
+        num_scaling_layers=3,
         num_perciever_steps=12,
     )
 
