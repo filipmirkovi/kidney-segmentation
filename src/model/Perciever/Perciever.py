@@ -18,6 +18,7 @@ class Perciever(nn.Module):
         num_perceptions: int,
         attenton_hidden_size: int,
         num_scaling_layers: int = 2,
+        num_perciever_steps: int = 8,
     ):
         super().__init__()
         self.encoder = Encoder(
@@ -32,6 +33,7 @@ class Perciever(nn.Module):
             latent_size=hidden_size,
             num_perceptions=num_perceptions,
             attention_hidden_size=attenton_hidden_size,
+            steps=num_perciever_steps,
         )
         logger.info(f"Processor params: {num_params(self.processor)}")
 
