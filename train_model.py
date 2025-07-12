@@ -101,7 +101,7 @@ def main(config_path: str | Path):
         in_channels=3,
         out_channels=4,
         hidden_size=512,
-        num_perceptions=512,
+        num_perceptions=1024,
         attenton_hidden_size=64,
         num_scaling_layers=2,
     )
