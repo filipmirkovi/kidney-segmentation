@@ -8,16 +8,16 @@ from loguru import logger
 import yaml
 from torch.utils.data import DataLoader, random_split
 
-from src.model.UNet.UNet import UNet
-from src.model.utils import num_params
-
 from src.dataset.SegmentationDataset import (
     SegmentationDataset,
     ImageSplittingDatasetWrapper,
 )
 from src.Trainer import Trainer
+from src.model.loss import RecallWeightedCrossEntropy
 from src.model.Perciever.Perciever import Perciever
 from src.dataset.utils import custom_collate_fn
+from src.model.UNet.UNet import UNet
+from src.model.utils import num_params
 
 
 # Configure loguru at the start of the script
@@ -129,10 +129,11 @@ def main(config_path: str | Path):
         optimizer, T_0=10, T_mult=2, eta_min=1e-6
     )
 
-    loss = torch.nn.CrossEntropyLoss(
-        reduction="none",
-        # weight=torch.tensor(class_weights).to(configs["device"]),
-    )
+    # loss = torch.nn.CrossEntropyLoss(
+    #    reduction="none",
+    #    # weight=torch.tensor(class_weights).to(configs["device"]),
+    # )
+    loss = RecallWeightedCrossEntropy(reduction="none", num_classes=4)
 
     logger.info("Initializing trainer...")
     trainer = Trainer(

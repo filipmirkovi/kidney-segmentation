@@ -4,6 +4,24 @@ import torch.nn.functional as F
 import einops
 
 
+class RecallWeightedCrossEntropy(nn.Module):
+    def __init__(self, num_classes: int, reduction: str = "none"):
+        super().__init__()
+        self.base_loss = nn.CrossEntropyLoss(reduction=reduction)
+        self.num_classes = num_classes
+
+    def forward(self, logits: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
+        predictions = logits.argmax(dim=-3, keepdim=True)
+        recall_per_class = torch.zeros(self.num_classes)
+        for class_idx in range(self.num_classes):
+            index = target == class_idx
+            TP = (predictions[index] == target[index]).float().sum()
+            recall_per_class[class_idx] = TP / index.float().sum()
+        self.base_loss.weight = torch.ones_like(recall_per_class) - recall_per_class
+        loss = self.base_loss(logits, target)
+        return loss
+
+
 class SoftDiceLoss(nn.Module):
     """
     Soft Dice Loss implementation for multi-class segmentation with background class.
