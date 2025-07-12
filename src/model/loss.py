@@ -11,7 +11,7 @@ class RecallWeightedCrossEntropy(nn.Module):
         self.num_classes = num_classes
 
     def forward(self, logits: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
-        predictions = logits.argmax(dim=-3, keepdim=True)
+        predictions = logits.argmax(dim=-3)
         recall_per_class = torch.zeros(self.num_classes)
         for class_idx in range(self.num_classes):
             index = target == class_idx
