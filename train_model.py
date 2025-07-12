@@ -54,7 +54,7 @@ def main(config_path: str | Path):
         full_dataset,
         lengths=[0.8, 0.2],
     )
-    patch_size = 64
+    patch_size = 128
     train_set = ImageSplittingDatasetWrapper(
         core_dataset=train_set,
         patch_size=patch_size,
