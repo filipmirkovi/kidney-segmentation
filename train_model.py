@@ -100,10 +100,10 @@ def main(config_path: str | Path):
         img_size=patch_size,
         in_channels=3,
         out_channels=4,
-        hidden_size=128,
-        num_perceptions=1024,
+        hidden_size=256,
+        num_perceptions=512,
         attenton_hidden_size=64,
-        num_scaling_layers=3,
+        num_scaling_layers=4,
         num_perciever_steps=12,
     )
 
