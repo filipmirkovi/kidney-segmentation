@@ -60,8 +60,8 @@ class Trainer:
 
         self.loss_monitor.reset()
         self.model.train()
-
-        for i, batch in enumerate(tqdm(self.train_dataloader)):
+        pbar = tqdm(self.train_dataloader)
+        for i, batch in enumerate(pbar):
             self.train_step_counter.update()
 
             self.optimizer.zero_grad()
@@ -99,6 +99,7 @@ class Trainer:
                 self.visualization_callback(
                     self.model, self.train_dataloader, epoch=epoch, epoch_type="train"
                 )
+            pbar.set_postfix_str(f"Epoch:{epoch:4d}\tLoss = {loss.item():10.6f}")
 
         self.scheduler.step()
 
@@ -107,7 +108,8 @@ class Trainer:
         self.model.eval()
         self.iou_score.compute()
         with torch.no_grad():
-            for i, batch in enumerate(tqdm(self.val_dataloader)):
+            pbar = tqdm(self.val_dataloader)
+            for i, batch in enumerate(pbar):
                 self.eval_step_counter.update()
                 x, y = batch
                 x, y = x.to(self.device), y.to(self.device)
@@ -137,6 +139,7 @@ class Trainer:
                     self.log_best_model(
                         self.model, class_iou.mean(dim=0), example_data=x
                     )
+                pbar.set_postfix_str(f"Epoch:{epoch:4d}\tLoss = {loss.item():10.6f}")
 
     def log_best_model(
         self,
