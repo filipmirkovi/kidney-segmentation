@@ -1015,7 +1015,7 @@
         "kind": 2,
         "importPath": "src.utils.visualization",
         "description": "src.utils.visualization",
-        "peekOfCode": "def visualize_segmentation_masks(\n    target: Union[torch.Tensor, np.ndarray],\n    prediction: Union[torch.Tensor, np.ndarray],\n    alpha: float = 0.7,\n    figsize: Tuple[int, int] = (15, 5),\n    background_idx: Optional[int] = None,\n    max_images: int = 9,\n) -> plt.Figure:\n    batch, seg_regions, H, W = target.shape\n    if batch > max_images:",
+        "peekOfCode": "def visualize_segmentation_masks(\n    target: Union[torch.Tensor, np.ndarray],\n    prediction: Union[torch.Tensor, np.ndarray],\n    alpha: float = 0.7,\n    figsize: Tuple[int, int] = (15, 5),\n    background_idx: Optional[int] = None,\n    max_images: int = 16,\n) -> plt.Figure:\n    batch, seg_regions, H, W = target.shape\n    if batch > max_images:",
         "detail": "src.utils.visualization",
         "documentation": {}
     },

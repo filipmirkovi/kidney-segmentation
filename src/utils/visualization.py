@@ -57,7 +57,7 @@ def visualize_segmentation_masks(
     alpha: float = 0.7,
     figsize: Tuple[int, int] = (15, 5),
     background_idx: Optional[int] = None,
-    max_images: int = 9,
+    max_images: int = 16,
 ) -> plt.Figure:
 
     batch, seg_regions, H, W = target.shape
