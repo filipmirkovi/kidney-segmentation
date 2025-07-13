@@ -17,6 +17,7 @@ def make_images_with_masks(
     num_classes: int,
     colors: list[str] = None,
     alpha: float = 0.6,
+    max_images: int = 9,
 ) -> plt.Figure:
     assert (
         len(image.shape) == 4
@@ -24,7 +25,9 @@ def make_images_with_masks(
     assert (
         len(masks.shape) == 4
     ), f"The mask tesnor should be bathced! It has shape {masks.shape}, but shape B,num_masks,H,W is expected!"
-
+    if len(image) > max_images:
+        image = image[:max_images]
+        masks = masks[:max_images]
     binary_masks = masks > 0.5
     batch_size = image.shape[0]
     image = image.mul(0.5).add(0.5)
@@ -44,7 +47,6 @@ def make_images_with_masks(
 
     image_grid = make_grid(masked_images, nrow=nrow)
     figure, ax = plt.subplots()
-
     ax.imshow(image_grid.permute(1, 2, 0))
     return figure
 
@@ -55,15 +57,25 @@ def visualize_segmentation_masks(
     alpha: float = 0.7,
     figsize: Tuple[int, int] = (15, 5),
     background_idx: Optional[int] = None,
+    max_images: int = 9,
 ) -> plt.Figure:
+
     batch, seg_regions, H, W = target.shape
+    if batch > max_images:
+        target = target[:max_images]
+        prediction = prediction[:max_images]
+        batch = max_images
+
     colors = COLORS[:seg_regions]
     mask_idx = [i for i in range(seg_regions) if i != background_idx]
     canvas = torch.ones((3, H, W))
+
     target_bitmap = target > 0.5
     prediction_bitmap = prediction > 0.5
+
     target_segmap = []
     prediction_segmap = []
+
     for i in range(batch):
         target_segmap.append(
             draw_segmentation_masks(

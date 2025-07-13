@@ -138,9 +138,9 @@ class Trainer:
                         self.model, class_iou.mean(dim=0), example_data=x
                     )
 
-            self.visualization_callback(
-                self.model, self.val_dataloader, epoch=epoch, epoch_type="valid"
-            )
+                    self.visualization_callback(
+                        self.model, self.val_dataloader, epoch=epoch, epoch_type="valid"
+                    )
 
     def log_best_model(
         self,
@@ -194,6 +194,7 @@ class Trainer:
             if epoch_idx % self.validate_every == 0:
                 self._validation_epoch(epoch=epoch_idx)
 
+    @torch.no_grad()
     def visualization_callback(
         self,
         model: nn.Module,
@@ -208,17 +209,16 @@ class Trainer:
         all_masks = []
         all_target_masks = []
         all_images = []
-        with torch.no_grad():
-            for i in idx:
-                img, label = dataloader.dataset[i]
-                if len(img.shape) < 4:
-                    img = img[None, ...]
-                if len(label.shape) < 4:
-                    label = label[None, ...]
-                masks = torch.softmax(model(img.to(self.device)), dim=-3)
-                all_images.append(img)
-                all_masks.append(masks.to("cpu")[:, :3, ...])
-                all_target_masks.append(label)
+        for i in idx:
+            img, label = dataloader.dataset[i]
+            if len(img.shape) < 4:
+                img = img[None, ...]
+            if len(label.shape) < 4:
+                label = label[None, ...]
+            masks = torch.softmax(model(img.to(self.device)), dim=-3)
+            all_images.append(img)
+            all_masks.append(masks.to("cpu")[:, :3, ...])
+            all_target_masks.append(label)
 
         all_images = torch.cat(all_images, dim=0)
         all_masks = torch.cat(all_masks, dim=0)

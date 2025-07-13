@@ -5,7 +5,6 @@ from einops.layers.torch import Rearrange
 from src.model.Perciever.Decoder import Decoder
 from src.model.Perciever.Encoder import Encoder
 from src.model.Perciever.PercieverProcessor import PercieverProcessor
-from src.model.utils import num_params
 
 
 class Perciever(nn.Module):
