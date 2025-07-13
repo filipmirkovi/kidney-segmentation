@@ -401,6 +401,22 @@
         "documentation": {}
     },
     {
+        "label": "num_params",
+        "importPath": "src.model.utils",
+        "description": "src.model.utils",
+        "isExtraImport": true,
+        "detail": "src.model.utils",
+        "documentation": {}
+    },
+    {
+        "label": "num_params",
+        "importPath": "src.model.utils",
+        "description": "src.model.utils",
+        "isExtraImport": true,
+        "detail": "src.model.utils",
+        "documentation": {}
+    },
+    {
         "label": "CrossAttentionLayer",
         "importPath": "src.model.Perciever.Layers.Attention",
         "description": "src.model.Perciever.Layers.Attention",
@@ -671,14 +687,6 @@
         "documentation": {}
     },
     {
-        "label": "num_params",
-        "importPath": "src.model.utils",
-        "description": "src.model.utils",
-        "isExtraImport": true,
-        "detail": "src.model.utils",
-        "documentation": {}
-    },
-    {
         "label": "SegDataItem",
         "kind": 6,
         "importPath": "src.dataset.SegmentationDataset",
@@ -863,7 +871,7 @@
         "kind": 6,
         "importPath": "src.model.Perciever.Perciever",
         "description": "src.model.Perciever.Perciever",
-        "peekOfCode": "class StabileSoftmax(nn.Module):\n    def __init__(self, dim: int = -3):\n        super().__init__()\n        self.softmax = nn.Softmax(dim=dim)\n    def forward(self, x):\n        x - torch.max(x, keepdim=True, dim=-3).values\n        return self.softmax(x)\nif __name__ == \"__main__\":\n    from src.model.utils import num_params\n    model = Perciever(",
+        "peekOfCode": "class StabileSoftmax(nn.Module):\n    def __init__(self, dim: int = -3):\n        super().__init__()\n        self.softmax = nn.Softmax(dim=dim)\n    def forward(self, x):\n        x - torch.max(x, keepdim=True, dim=-3).values\n        return self.softmax(x)\nif __name__ == \"__main__\":\n    model = Perciever(\n        img_size=256,",
         "detail": "src.model.Perciever.Perciever",
         "documentation": {}
     },

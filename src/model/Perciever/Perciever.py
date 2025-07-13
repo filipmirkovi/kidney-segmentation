@@ -5,6 +5,7 @@ from einops.layers.torch import Rearrange
 from src.model.Perciever.Decoder import Decoder
 from src.model.Perciever.Encoder import Encoder
 from src.model.Perciever.PercieverProcessor import PercieverProcessor
+from src.model.utils import num_params
 
 
 class Perciever(nn.Module):
@@ -72,7 +73,6 @@ class StabileSoftmax(nn.Module):
 
 
 if __name__ == "__main__":
-    from src.model.utils import num_params
 
     model = Perciever(
         img_size=256,
