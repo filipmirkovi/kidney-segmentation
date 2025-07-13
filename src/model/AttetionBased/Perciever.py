@@ -2,9 +2,9 @@ from loguru import logger
 import torch
 import torch.nn as nn
 from einops.layers.torch import Rearrange
-from src.model.Perciever.Decoder import Decoder
-from src.model.Perciever.Encoder import Encoder
-from src.model.Perciever.PercieverProcessor import PercieverProcessor
+from src.model.AttetionBased.Decoder import Decoder
+from src.model.AttetionBased.Encoder import Encoder
+from src.model.AttetionBased.PercieverProcessor import PercieverProcessor
 from src.model.utils import num_params
 
 
