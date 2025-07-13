@@ -96,23 +96,23 @@ def main(config_path: str | Path):
 
     logger.info("Initializing model...")
 
-    model = Perciever(
-        img_size=patch_size,
-        in_channels=3,
-        out_channels=4,
-        hidden_size=512,
-        num_perceptions=1024,
-        attenton_hidden_size=64,
-        num_scaling_layers=3,
-        num_perciever_steps=6,
-    )
-
-    # model = UNet(
+    # model = Perciever(
+    #    img_size=patch_size,
     #    in_channels=3,
-    #    num_classes=configs["num_segmentation_regions"] + 1,
-    #    apply_softmax=False,
-    #    hidden_channels=[16, 32, 64],
+    #    out_channels=4,
+    #    hidden_size=512,
+    #    num_perceptions=1024,
+    #    attenton_hidden_size=64,
+    #    num_scaling_layers=3,
+    #    num_perciever_steps=6,
     # )
+
+    model = UNet(
+        in_channels=3,
+        num_classes=configs["num_segmentation_regions"] + 1,
+        apply_softmax=False,
+        hidden_channels=[32, 128, 512],
+    )
 
     logger.success(
         "Model built {}!\nSending model to device {}\nThe model has {} parameters.".format(
