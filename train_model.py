@@ -54,7 +54,7 @@ def main(config_path: str | Path):
         full_dataset,
         lengths=[0.8, 0.2],
     )
-    patch_size = 128
+    patch_size = 64
     train_set = ImageSplittingDatasetWrapper(
         core_dataset=train_set,
         patch_size=patch_size,
@@ -100,11 +100,11 @@ def main(config_path: str | Path):
         img_size=patch_size,
         in_channels=3,
         out_channels=4,
-        hidden_size=256,
-        num_perceptions=512,
+        hidden_size=512,
+        num_perceptions=1024,
         attenton_hidden_size=64,
-        num_scaling_layers=4,
-        num_perciever_steps=12,
+        num_scaling_layers=3,
+        num_perciever_steps=6,
     )
 
     # model = UNet(

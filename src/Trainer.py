@@ -138,6 +138,10 @@ class Trainer:
                         self.model, class_iou.mean(dim=0), example_data=x
                     )
 
+                    self.visualization_callback(
+                        self.model, self.val_dataloader, epoch=epoch, epoch_type="valid"
+                    )
+
     def log_best_model(
         self,
         model: nn.Module,
